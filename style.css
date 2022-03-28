@@ -1,0 +1,140 @@
+body{
+    background-color: rgb(224, 141, 141);
+}
+/*index.html*/
+#manhwah1{
+    text-align: center;
+    color:chocolate;
+    border: 6px solid black;
+    background-color:aqua;
+    font-family:'Times New Roman', Times, serif;
+    font-style: bold;
+    font-size: 50px;
+    text-decoration: dotted underline;
+}
+#cantfind{
+    text-align: right;
+}
+#caption{
+    text-align: center;
+}
+.intopic{
+    border: 6px solid;
+    background-color: rgb(133, 201, 45);
+    width: 330px;
+    padding: 5px;
+}
+.inlist{
+    text-align: left;
+    border: 5px dashed;
+    width: 330px;
+    padding: 5px;
+    background-color: bisque;
+}
+a:hover{
+    color: darkgrey;
+}
+#maincontenth3{
+    border: 6px solid;
+    padding: 5px;
+    background-color: rgb(133, 201, 45);
+}
+#caption{
+    background-color: brown;
+    border: 2px solid;
+    border-radius: 5px;
+    padding: 3px;
+}
+
+
+/*page2.html*/
+#contenth2{
+    text-align: center;
+    border: 6px solid;
+    padding: 5px;
+    background-color: rgb(133, 201, 45);
+}
+.contentname{
+    font-family: 'Times New Roman', Times, serif;
+}
+.contentbut{
+    background-color: rgb(152, 243, 61);
+    border-radius: 30px;
+    padding: 6px;
+}
+button:hover{
+    background-color: rgb(65, 226, 159);
+}
+
+
+/*page3.html*/
+#myloveh2{
+    text-align: center;
+    border: 4px solid;
+}
+.mylovelabel{
+    background-color: rgb(80, 205, 255);
+    border: 4px solid;
+}
+.mp1{
+    width: 330px;
+    border: 3px solid;
+}
+.mp2{
+    width: 330px;
+    border: 3px solid;
+}
+.mp3{
+    width: 330px;
+    border: 3px solid;
+}
+.mp4{
+    width: 330px;
+    border: 3px solid;
+}
+.mp5{
+    width: 330px;
+    border: 3px solid;
+}
+.mp6{
+    width: 330px;
+    border: 3px solid;
+}
+.mp7{
+    width: 330px;
+    border: 3px solid;
+}
+.mp8{
+    width: 330px;
+    border: 3px solid;
+}
+.mp9{
+    width: 330px;
+    border: 3px solid;
+}
+.mp10{
+    width: 330px;
+    border: 3px solid;
+}
+.mp11{
+    width: 330px;
+    border: 3px solid;
+}
+.mp12{
+    width: 330px;
+    border: 3px solid;
+}
+.mp13{
+    width: 330px;
+    border: 3px solid;
+}
+
+
+/*page4.html*/
+#darkcontenth2{
+    text-align: center;
+}
+.darklabel{
+    background-color: aquamarine;
+}
+
