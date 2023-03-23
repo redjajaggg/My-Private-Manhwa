@@ -79,6 +79,16 @@ function appenddata(data){
         dic_name_firstchar[data[i].Name] = data[i].Firstchar;
         dic_name_date[data[i].Name] = data[i].Date;
     }
+    document.getElementById("expanditr").onclick = () => {
+        document.getElementById("eachp").style.display = "block";
+        document.getElementById("website").style.width = "300px";
+        document.getElementById("expanditr").style.display = "none";
+    }
+    document.getElementById("hide").onclick = () => {
+        document.getElementById("eachp").style.display = "none";
+        document.getElementById("website").style.width = "50px";
+        document.getElementById("expanditr").style.display = "block";
+    }
     document.getElementById("prev").onclick = () => {
         const se = document.querySelector('#page');
         se.value = document.getElementById("page").options[document.getElementById("page").selectedIndex - 1].text;
