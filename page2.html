@@ -16,22 +16,26 @@
     
 <!--*************************work space***********************************************************-->
     <div id="website" style="width: 300px; display: none;">
-        <img src="https://i.pinimg.com/564x/5c/dc/93/5cdc93af868b501a52050321ac62a0f9.jpg" style="width: 295px; border: 3px solid; border-radius: 10px;">
-        My Private Manhwa's Page:<br>
-        <div>
-            <ul id="mainlist">
-                <li>Home <a href="index.html">here</a></li>
-                <li>Portrayal <a href="page3.html">here</a></li>
-                <li>Private <a href="page4.html">here</a></li>
-                <li>Off Content <a href="offtopic.html">here</a></li>
-                <li>off Portrayal <a href="offpic.html">here</a></li>
-                <li>Manhwa Manager(online) <a href="getdatacontrol.html">here</a></li>
-            </ul>
-            <form class="formcenter" action="https://www.google.com/search" method="get" id="se">
-                <input type="text" id="query" name="q" placeholder="Search Manhwa here...">
-                <button class="buttons">Search</button>
-            </form><br>
+        <button id="expanditr" style="display: none;" class="contentbut">Expand</button>
+        <div id="eachp">
+            <img src="https://i.pinimg.com/564x/5c/dc/93/5cdc93af868b501a52050321ac62a0f9.jpg" style="width: 295px; border: 3px solid; border-radius: 10px;">
+            My Private Manhwa's Page:<br>
+            <div>
+                <ul id="mainlist">
+                    <li>Home <a href="index.html">here</a></li>
+                    <li>Portrayal <a href="page3.html">here</a></li>
+                    <li>Private <a href="page4.html">here</a></li>
+                    <li>Off Content <a href="offtopic.html">here</a></li>
+                    <li>off Portrayal <a href="offpic.html">here</a></li>
+                    <li>Manhwa Manager(online) <a href="getdatacontrol.html">here</a></li>
+                </ul>
+                <form class="formcenter" action="https://www.google.com/search" method="get" id="se">
+                    <input type="text" id="query" name="q" placeholder="Search Manhwa here...">
+                    <button class="buttons">Search</button>
+                </form><br><button type="button" id="hide" class="contentbut" style="margin-left: 265px;">Hide</button><br>
+            </div>
         </div>
+        
     </div>
     <div id="qr">
         <button id="searchopen" class="contentbut" onclick="minisearchopen()">Search here & Today's Update</button><br><br>
@@ -52,7 +56,7 @@
         <label>Date : </label>
         <input type="text" id="dated" name="dated" style="width: 200px; border: solid black 2px; border-radius: 10px; background-color: mediumblue" placeholder="eq. 1 (value 1-7)">
         <br><br>
-        <button type="button" id="search" class="contentbut">search</button> <button type="button" id="cleartext1" class="contentbut">clear</button> <button type="button" id="spoil" class="contentbut">Spoil</button>
+        <button type="submit" id="search" class="contentbut">search</button> <button type="button" id="cleartext1" class="contentbut">clear</button> <button type="button" id="spoil" class="contentbut">Spoil</button>
         <br><div id="update">Today Update...</div><br>
     </div>
     </div><br>
