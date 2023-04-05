@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.rawgit.com/Keyang/node-csvtojson/d41f44aa/browser/csvtojson.min.js"></script>
+    <title>My Private Manhwa</title>
+    <link rel="icon" href="https://i.pinimg.com/564x/65/8d/70/658d70042f014f02a3cd0cd6bc29d7a0.jpg">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <a href="index.html"><img class="homeicon" src="https://i.pinimg.com/564x/2b/05/8d/2b058d9e38670c731169bcdbf62652a6.jpg"></a>
+    <h2 id="contenth2">Content</h2>
+    
+    
+<!--*************************work space***********************************************************-->
+    <div id="website" style="width: 300px; display: none;">
+        <button id="expanditr" style="display: none;" class="contentbut">Expand</button>
+        <div id="eachp">
+            <img src="https://i.pinimg.com/564x/5c/dc/93/5cdc93af868b501a52050321ac62a0f9.jpg" style="width: 295px; border: 3px solid; border-radius: 10px;">
+            My Private Manhwa's Page:<br>
+            <div>
+                <ul id="mainlist">
+                    <li>Home <a href="index.html">here</a></li>
+                    <li>Portrayal <a href="page3.html">here</a></li>
+                    <li>Private <a href="page4.html">here</a></li>
+                    <li>Off Content <a href="offtopic.html">here</a></li>
+                    <li>off Portrayal <a href="offpic.html">here</a></li>
+                    <li>Manhwa Manager(online) <a href="getdatacontrol.html">here</a></li>
+                </ul><button type="button" id="hide" class="contentbut" style="margin-left: 265px;">Hide</button><br>
+            </div>
+        </div>
+        
+    </div>
+    <div id="qr">
+        <button id="searchopen" class="contentbut" onclick="minisearchopen()">Search here & Today's Update</button><br><br>
+        <label>Count: <label id="allnum">0</label> (<a href="index.html">Back</a> : <a href="getdatacontrol.html">Manhwa Manager</a>)</label>
+        <div id="searchpane" style="display: none;">
+        <br><label>Name : </label>
+        <input type="text" id="name" name="name" list="names" style="width: 200px; border: solid black 2px; border-radius: 10px; background-color: mediumblue" placeholder="eq. How to hide the emperor's child">
+        <datalist id="names"></datalist>
+        <br><label>Part : </label>
+        <input type="text" id="part" name="part" list="parts" style="width: 200px; border: solid black 2px; border-radius: 10px; background-color: mediumblue" placeholder="eq. 5">
+        <datalist id="parts"></datalist>
+        <br><label>Website : </label>
+        <input type="text" id="hasweb" name="web" list="webs" style="width: 200px; border: solid black 2px; border-radius: 10px; background-color: mediumblue" placeholder="eq. yes / no">
+        <datalist id="webs"><option value="yes"></option><option value="no"></option></datalist><br>
+        <label>Status : </label>
+        <input type="text" id="statu" name="statu" list="statud" style="width: 200px; border: solid black 2px; border-radius: 10px; background-color: mediumblue" placeholder="eq. ongoing / end">
+        <datalist id="statud"><option value="ongoing"></option><option value="end"></option></datalist><br>
+        <label>Date : </label>
+        <input type="text" id="dated" name="dated" style="width: 200px; border: solid black 2px; border-radius: 10px; background-color: mediumblue" placeholder="eq. 1 (value 1-7)">
+        <br><br>
+        <button type="submit" id="search" class="contentbut">search</button> <button type="button" id="cleartext1" class="contentbut">clear</button> <button type="button" id="spoil" class="contentbut">Spoil</button>
+        <br><div id="update">Today Update...</div><br>
+    </div>
+    </div><br>
+    
+    <div id="mes"><div id="changers">Page: <select name="page" id="page"></select><button type="button" id="prev" class="contentbut"> Prev </button><button type="button" id="next" class="contentbut"> Next </button> | <button type="button" id="gos" class="contentbut"> Go </button> <button type="button" id="alls" class="contentbut"> All </button></div></div>
+    <div id="showlater" style="display: none; padding: 6px; text-align: left; width: 300px; margin-left: auto; margin-right: auto; background-color: blanchedalmond; border-bottom-right-radius: 10px; border-bottom-left-radius: 10px; font-size: 18px;">Connection Link...</div><br>
+    <div id="contrainer">Loading...</div>
+<!--**********************************************************************************************-->
+    <br><br>
+    <a href="index.html"><img class="homeicon" src="https://i.pinimg.com/564x/2b/05/8d/2b058d9e38670c731169bcdbf62652a6.jpg"></a>
+    <a href="index.html"><img class="homeicon" src="https://i.pinimg.com/564x/8a/67/be/8a67befed4bb41837186774172c7bf30.jpg"></a>
+    contract: <a href="https://discordapp.com/users/1055326431804137504/"><img style="width: 30px; border-radius: 10px;" src="https://i.pinimg.com/564x/66/1e/cf/661ecf66bda49150b44d25e4440e2bb8.jpg"></a> Location: Bangkok, Thailand
+    <br>© 2022 My Private Manhwa. Website source reserves to My Private Manhwa, Contents credit to owner.
+    <h5 id="caption">"Attention! This website is personal collection not for commercial"</h5>
+
+    <script src="page2newtest.js">
+
+    </script>
+</body>
+</html>
