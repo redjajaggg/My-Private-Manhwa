@@ -243,14 +243,14 @@ function appenddata(data){
             each_upt.style.fontSize = "30px";
             each_upt.style.borderRadius = "20px";
         }
-        if(getday - 1 == data[i].Date && data[i].Status !== "end"){
+        if(getday - 1 == data[i].Date && data[i].Status != "end"){
             each_upt.innerHTML = "Check Translate";
             each_upt.style.backgroundColor = "blue";
             each_upt.style.textAlign = "center";
             each_upt.style.fontSize = "30px";
             each_upt.style.borderRadius = "20px";
         }
-        if(data[i].Date == "n"){
+        if(data[i].Date == "n"&& data[i].Status != "end"){
             var random = Math.floor(Math.random() * (data.length + 1));
             if(random % 2 == 0){
                 each_upt.innerHTML = "Might Update...";
