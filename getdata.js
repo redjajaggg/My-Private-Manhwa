@@ -428,7 +428,8 @@ function appenddata(data){
     document.getElementById("addgen").onclick = () => {
         let ans = window.prompt("Please type password as Admin to edit database");
         if(ans == "admin" || ans == "Admin"){
-            window.location.href = "https://docs.google.com/spreadsheets/d/1gXiBMZ63oNIhyhXMMmmcAda1GbxDi5IgvU7RfeYg7F0/edit?usp=sharing";
+            window.location.href = "https://docs.google.com/spreadsheets/d/1CCq71kP1ZPLlMIbv3wX6CGDHM3ym44YO9Ixy4nlNYwE/edit?usp=sharing";
+            alert("Open extension >> Appscript and run.");
         }
     }
 }
