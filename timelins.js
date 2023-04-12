@@ -67,8 +67,7 @@ function appenddata(data){
                     
                     var imgs = document.createElement("img");
                     imgs.setAttribute('src', data[j].PictureLink);
-                    if(window.innerWidth > 700){imgs.setAttribute('width', 400); divbig.style.width = "700px";}
-                    if(window.innerWidth <= 700){imgs.setAttribute('width', 280); divbig.style.width = "300px";}
+                    divbig.style.width = "700px";
                     
                     divbig.appendChild(imgs);
                 }
