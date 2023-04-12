@@ -79,7 +79,6 @@ function appenddata(data){
         index = 0;
         main.innerHTML = "";
         num_page = document.getElementById("page").options[document.getElementById("page").selectedIndex].text;
-        console.log(num_page);
         max = (num_page * num_each);
         min = max - num_each;
         for(var i = min; i < max; i++){
@@ -270,11 +269,11 @@ function appenddata(data){
         if(data[i].Rawweb != "n"){raw = "<a href='"+ data[i].Rawweb + "'>RawM</a> |";}
         if(data[i].Newtoki != "n"){newto = "<a href='" + go + "'>RawL</a> |"}
         if(data[i].Translate != "n"){eng = "<a href='" + data[i].Translate + "'>English</a> |";}
-        if(data[i].Translate != "n"){other = "<a href='" + data[i].Otherweb + "'>Other</a>";}
+        if(data[i].Otherweb != "n"){other = "<a href='" + data[i].Otherweb + "'>Other</a>";}
         each_name.innerHTML = data[i].Name;
         each_cov.appendChild(each_pic);
-        if(data[index].Status == "end"){each_info.innerHTML = "Part: " + data[i].Part + "<br>" + "Date: " + covertdate(data[i].Date) + " {END}<br>" + "Number: " + data[i].Number;}
-        each_info.innerHTML = "Part: " + data[i].Part + "<br>" + "Date: " + covertdate(data[i].Date) + "<br>" + "Number: " + data[i].Number;
+        if(data[i].Status == "end"){each_info.innerHTML = "Part: " + data[i].Part + "<br>" + "Date: " + covertdate(data[i].Date) + " {END}<br>" + "Number: " + data[i].Number;}
+        if(data[i].Status != "end"){each_info.innerHTML = "Part: " + data[i].Part + "<br>" + "Date: " + covertdate(data[i].Date) + "<br>" + "Number: " + data[i].Number;}
         each_exp.innerHTML = "More..."
         each_exp.onclick = () => {
             window.scrollTo(0, 0);
@@ -451,7 +450,7 @@ function appenddata(data){
                         eachi.appendChild(cggdrive5);
                     }
                     if(datai[8].Info2 != "n"){
-                        cggdrive6.innerHTML = "<a href=" + datai[8].Info2 + ">Google Drive V</a><br><br>";
+                        cggdrive6.innerHTML = "<a href=" + datai[8].Info2 + ">Google Drive VI</a><br><br>";
                         eachi.appendChild(cggdrive6);
                     }
                 }
@@ -459,8 +458,8 @@ function appenddata(data){
         }
     }
     function potra(name, datap){
+        fetch(datadark).then(resultsr=>resultsr.text()).then(function (csvtextsr){return csv().fromString(csvtextsr);}).then(function(csvsr){darks(csvsr, name)});
         var back = document.createElement("button");
-        var read = document.createElement("button");
         back.innerHTML = "Back";
         back.className = "contentbut";
         back.onclick = () => {
@@ -479,6 +478,16 @@ function appenddata(data){
                 pic.style.border = "3px solid";
                 pic.style.borderRadius = "5px";
                 eachs.appendChild(pic);
+            }
+        }
+    }
+    function darks(datad, name){
+        var told = document.createElement("div");
+        for(var i = 0; i < datad.length; i++){
+            if((datad[i].Name).includes(name)){
+                told.innerHTML = "Adult content is in Private page.";
+                eachs.appendChild(told);
+                
             }
         }
     }
