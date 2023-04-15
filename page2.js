@@ -431,6 +431,9 @@ function appenddata(data){
                     var cggdrive4 = document.createElement("div")
                     var cggdrive5 = document.createElement("div")
                     var cggdrive6 = document.createElement("div")
+                    var piczip = document.createElement("div");
+                    var picRzip = document.createElement("div");
+                    var pdfRzip = document.createElement("div");
                     eachi.appendChild(cggdrive1);
                     cggdrive1.innerHTML = "<br><a href=" + datai[6].Info1 + ">Google Drive I</a><br><br>";
                     if(datai[7].Info1 != "n"){
@@ -452,6 +455,18 @@ function appenddata(data){
                     if(datai[8].Info2 != "n"){
                         cggdrive6.innerHTML = "<a href=" + datai[8].Info2 + ">Google Drive VI</a><br><br>";
                         eachi.appendChild(cggdrive6);
+                    }
+                    if(datai[0].Info2 != "n"){
+                        piczip.innerHTML = "<a href=" + datai[0].Info2 + ">Download All Chapter(.jpg in .zip file)</a><br><br>";
+                        eachi.appendChild(piczip);
+                    }
+                    if(datai[1].Info2 != "n"){
+                        picRzip.innerHTML = "<a href=" + datai[1].Info2 + ">Download R19 Moment(.jpg in .zip file)</a><br><br>";
+                        eachi.appendChild(picRzip);
+                    }
+                    if(datai[1].Status != "n"){
+                        pdfRzip.innerHTML = "<a href=" + datai[1].Status + ">Download R19 Moment(.pdf in .zip file)</a><br><br>";
+                        eachi.appendChild(pdfRzip);
                     }
                 }
             }
