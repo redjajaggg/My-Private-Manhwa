@@ -37,6 +37,7 @@ function minisearchopen(){
 const data_csv_format = "https://docs.google.com/spreadsheets/d/12OgnnIYoeG3oa5prcZ5HgzjuECPCk4FmBhCf_ecV_TY/export?format=csv";
 const datadark = "https://docs.google.com/spreadsheets/d/1HsH40yVrlcWrSLXn0qEG06BR7X_YS4YUQyFbEzaEf7Y/export?format=csv";
 const datapic = "https://docs.google.com/spreadsheets/d/1IYfYPLlBbq8Qw4Q7drtAH8stgHQpLqgfg_ZcWtK6U5M/export?format=csv";
+const datamore = "https://docs.google.com/spreadsheets/d/1vAmEFn17c6kJMQwJ5JPYlvtWnRRweM8O-uk1mwn5xgU/export?format=csv";
 
 fetch(data_csv_format).then(result=>result.text()).then(function (csvtext){return csv().fromString(csvtext);}).then(function(csv){appenddata(csv);});
 function appenddata(data){
@@ -281,16 +282,15 @@ function appenddata(data){
             main.style.display = "none";
             eachs.style.display = "block";
             
-            if(data[i].Website != "no"){
-                eachi.style.display = "block";
-                const main_data = "https://docs.google.com/spreadsheets/d/1R1e93BSQ-dVmHgZadcJmINP_qDJo65CZFBJ98hhzpvk/export?format=csv";
-                fetch(main_data).then(results=>results.text()).then(function (csvtexts){return csv().fromString(csvtexts);}).then(function(csvs){each(data[i].Name, csvs);});
-            }
-            else{
+            eachi.style.display = "block";
+            const main_data = "https://docs.google.com/spreadsheets/d/1R1e93BSQ-dVmHgZadcJmINP_qDJo65CZFBJ98hhzpvk/export?format=csv";
+            fetch(main_data).then(results=>results.text()).then(function (csvtexts){return csv().fromString(csvtexts);}).then(function(csvs){each(data[i].Name, csvs);});
+            
+            /*else{
                 window.scrollTo(0, 0);
                 eachs.innerHTML = data[i].Name;
                 fetch(datapic).then(results=>results.text()).then(function (csvtexts){return csv().fromString(csvtexts);}).then(function(csvs){potra(data[i].Name, csvs);});
-            }
+            }*/
             
         };
         each_link.innerHTML = raw + newto + eng + other;
@@ -350,10 +350,12 @@ function appenddata(data){
         main.appendChild(each_big);
     }
     function each(name, datae){
+        //if(window.innerWidth >= 300){eachi.style.width = "500px";}
         eachs.innerHTML = "";
         eachi.innerHTML = "";
         var names = document.createElement("div");
         var namel = document.createElement("div");
+        var moreshow = document.createElement("div");
         var back = document.createElement("button")
         var potr = document.createElement("button")
 
@@ -386,7 +388,59 @@ function appenddata(data){
         namel.style.fontSize = "18px";
 
         eachi.appendChild(names);
+        eachi.appendChild(moreshow);
         eachs.appendChild(namel);
+
+        fetch(datamore).then(resultsi=>resultsi.text()).then(function (csvtextsi){return csv().fromString(csvtextsi);}).then(function(csvsi){
+            var data = csvsi;
+            for(var i = 0; i < data.length; i++){
+                if(data[i].Name == name){
+                    var anames = document.createElement("div");
+                    var type = document.createElement("div");
+                    var noti = document.createElement("div");
+                    var flagl;
+                    var rate;
+                    if(data[i].Nation == "kr"){flagl = "https://i.pinimg.com/564x/26/16/8c/26168cddf75348cc28299de4daddcb5b.jpg";}
+                    if(data[i].Nation == "cn"){flagl = "https://i.pinimg.com/564x/d0/96/c0/d096c0d511574bb41a18ed61deb5a06e.jpg";}
+                    if(data[i].Nation == "th"){flagl = "https://i.pinimg.com/564x/ca/bc/d3/cabcd397c3831d374df02e52d127b9f1.jpg";}
+                    
+                    if(data[i].Rate == "n"){rate = "";}
+                    if(data[i].Rate == "15"){rate = "R15 (15+)";}
+                    if(data[i].Rate == "18"){rate = "R18 (18+)";}
+                    
+                    var types = data[i].Type;
+                    types = types.replaceAll("rf", "RomanceFantacy");
+                    types = types.replaceAll("mt", "Adult");
+                    types = types.replaceAll("bl", "BL");
+                    types = types.replaceAll("rm", "Romance");
+                    types = types.replaceAll("ft", "Fantacy");
+                    types = types.replaceAll("dm", "Drama");
+                    types = types.replaceAll("ov", "OmegaVerse");
+                    types = types.replaceAll("cm", "Comedy");
+                    types = types.replaceAll("ir", "Isekai-Reverse time");
+                    types = types.replaceAll("sf", "Sci-Fi");
+                    types = types.replaceAll("at", "Action");
+                    types = types.replaceAll("fm", "Family");
+                    types = types.trim();
+                    types = types.replaceAll(" ", ", ");
+                    anames.innerHTML = "Alternative: " + data[i].AssName + "  <img src='" + flagl + "' style='width: 30px; border-radius: 2px;'>" + rate;
+                    type.innerHTML = "Type: " + types;
+
+                    if(data[i].Notificate != "n"){
+                        noti.innerHTML = "Notice: " + data[i].Notificate;
+                        noti.style.backgroundColor = "yellow";
+                    }
+                    if(data[i].Notificate != "c"){
+                        noti.innerHTML = "Notice: Completely!";
+                        noti.style.backgroundColor = "yellow";
+                    }
+                    moreshow.style.backgroundColor = "#a8eb34";
+                    moreshow.appendChild(anames);
+                    moreshow.appendChild(type);
+                    moreshow.appendChild(noti);
+                }
+            }
+        });
 
         for(var i = 0; i < datae.length; i++){
             if(datae[i].Name == name){
@@ -506,6 +560,7 @@ function appenddata(data){
             }
         }
     }
+    
     function covertdate(date){
 
         var datelast = "";
