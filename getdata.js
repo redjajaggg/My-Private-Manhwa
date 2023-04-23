@@ -1,6 +1,6 @@
 const data_link = "https://docs.google.com/spreadsheets/d/12OgnnIYoeG3oa5prcZ5HgzjuECPCk4FmBhCf_ecV_TY/edit?usp=sharing";
 const data_csv_format = "https://docs.google.com/spreadsheets/d/12OgnnIYoeG3oa5prcZ5HgzjuECPCk4FmBhCf_ecV_TY/export?format=csv";
-const addnewpage = "https://script.google.com/macros/s/AKfycbyD6HGYBNGRxrMDKApkPs3MES4g5q0Vy7aNDMCEAn-OhfbKhHLIQ5S1lrxiiegnd1w/exec";
+const addnewpage = "https://script.google.com/macros/s/AKfycbzmeLhFbjrOHeLLl8sdnPjlRxjWe0bSPFQJou-kfamWYy_hc-g80z9ZpyDv4SPUznkO/exec";
 
 //Search Zone
 fetch(data_csv_format).then(result=>result.text()).then(function (csvtext){
@@ -430,6 +430,12 @@ function appenddata(data){
         if(ans == "admin" || ans == "Admin"){
             window.location.href = "https://docs.google.com/spreadsheets/d/1CCq71kP1ZPLlMIbv3wX6CGDHM3ym44YO9Ixy4nlNYwE/edit?usp=sharing";
             alert("Open extension >> Appscript and run.");
+        }
+    }
+    document.getElementById("moredatatable").onclick = () => {
+        let ans = window.prompt("Please type password as Admin to edit database");
+        if(ans == "admin" || ans == "Admin"){
+            window.location.href = "https://docs.google.com/spreadsheets/d/1vAmEFn17c6kJMQwJ5JPYlvtWnRRweM8O-uk1mwn5xgU/edit?usp=sharing";
         }
     }
 }
