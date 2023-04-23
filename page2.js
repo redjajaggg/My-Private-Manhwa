@@ -398,6 +398,8 @@ function appenddata(data){
                     var anames = document.createElement("div");
                     var type = document.createElement("div");
                     var noti = document.createElement("div");
+                    var spoil = document.createElement("div");
+                    var butspoil = document.createElement("button");
                     var flagl;
                     var rate;
                     if(data[i].Nation == "kr"){flagl = "https://i.pinimg.com/564x/26/16/8c/26168cddf75348cc28299de4daddcb5b.jpg";}
@@ -422,7 +424,6 @@ function appenddata(data){
                     types = types.replaceAll("at", "Action");
                     types = types.replaceAll("fm", "Family");
                     types = types.trim();
-                    types = types.replaceAll(" ", ", ");
                     anames.innerHTML = "Alternative: " + data[i].AssName + "  <img src='" + flagl + "' style='width: 30px; border-radius: 2px;'>" + rate;
                     type.innerHTML = "Type: " + types;
 
@@ -430,14 +431,41 @@ function appenddata(data){
                         noti.innerHTML = "Notice: " + data[i].Notificate;
                         noti.style.backgroundColor = "yellow";
                     }
-                    if(data[i].Notificate != "c"){
+                    if(data[i].Notificate == "c"){
                         noti.innerHTML = "Notice: Completely!";
                         noti.style.backgroundColor = "yellow";
                     }
+                    
                     moreshow.style.backgroundColor = "#a8eb34";
+                    moreshow.style.padding = "5px";
                     moreshow.appendChild(anames);
                     moreshow.appendChild(type);
                     moreshow.appendChild(noti);
+                    
+                    butspoil.innerHTML = "Spoil";
+                    if(data[i].Spoil != "n"){
+                        moreshow.appendChild(butspoil);
+                        spoil.innerHTML = data[i].Spoil;
+                        spoil.style.backgroundColor = "#b0d9ff";
+                        moreshow.appendChild(spoil);
+                    }
+                    spoil.style.display = "none";
+                    spoil.style.padding = "7px";
+                    spoil.style.position = "absolute";
+                    
+                    butspoil.style.background = "none";
+                    butspoil.style.borderRadius = "10px";
+                    butspoil.onclick = () => {
+                        if(spoil.style.display == "none"){
+                            spoil.style.display = "block";
+                            butspoil.innerHTML = "HideSpoil"
+                        }else{
+                            spoil.style.display = "none";
+                            butspoil.innerHTML = "Spoil"
+                        }
+                    };
+                    
+
                 }
             }
         });
