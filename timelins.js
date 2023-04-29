@@ -60,6 +60,7 @@ function appenddata(data){
             divbig.style.marginLeft = "auto";
             divbig.style.marginRight = "auto";
             divbig.style.fontSize = "0";
+            divbig.style.width = "350px";
 
             
             for(var j = 0; j < data.length; j++){
@@ -67,7 +68,7 @@ function appenddata(data){
                     
                     var imgs = document.createElement("img");
                     imgs.setAttribute('src', data[j].PictureLink);
-                    divbig.style.width = "700px";
+                    imgs.style.width = "320px";
                     
                     divbig.appendChild(imgs);
                 }
