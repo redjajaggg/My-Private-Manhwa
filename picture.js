@@ -53,8 +53,18 @@ function appenddata(data){
             create(namegets);
         }
     }
+    var filter = "n";
     document.getElementById("clearname").onclick = () => {document.getElementById("name").value = "";}
-    document.getElementById("show").innerHTML = "Click all or Choose one...";
+    document.getElementById("show").innerHTML = "<img src='https://i.pinimg.com/564x/ee/ad/e6/eeade6c5f72368dcd7404f6cdf9896ee.jpg' style='width: 330px; border-radius: 5px;'>";
+    document.getElementById("eachsome").onclick = () => {
+        if(filter == "n"){
+            filter = "e";
+            document.getElementById("eachsome").innerHTML = "Sub";
+        }else{
+            filter = "n";
+            document.getElementById("eachsome").innerHTML = "Main";
+        }
+    };
     function create(name){
         
         var div = document.createElement("div");
@@ -82,12 +92,12 @@ function appenddata(data){
 
             
             for(var j = 0; j < data.length; j++){
-                if(data[j].Name == name && data[j].Status == "n"){
+                if(data[j].Name == name && data[j].Status == filter){
                     
                     var imgs = document.createElement("img");
                     imgs.setAttribute('src', data[j].Link);
-                    if(window.innerWidth > 700){imgs.setAttribute('width', 300); divbig.style.width = "700px";}
-                    if(window.innerWidth <= 700){imgs.setAttribute('width', 140); divbig.style.width = "300px";}
+                    if(window.innerWidth > 700){imgs.setAttribute('width', 300); divbig.style.width = "95%";}
+                    if(window.innerWidth <= 700){imgs.setAttribute('width', 140);}
                     
                     imgs.style.border = '0.5px solid black';
                     imgs.style.padding = "3px";
