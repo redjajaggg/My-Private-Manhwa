@@ -250,10 +250,32 @@ function appenddata(data){
             each_upt.style.fontSize = "30px";
             each_upt.style.borderRadius = "20px";
         }
-        if(data[i].Date == "n"&& data[i].Status != "end"){
+        if(data[i].Date.substring(0, 1) == "n"&& data[i].Status != "end"){
             var random = Math.floor(Math.random() * (data.length + 1));
-            if(random % 2 == 0){
-                each_upt.innerHTML = "Might Update...";
+            if(data[i].Date == "n"){
+                if(random % 2 == 0){
+                    each_upt.innerHTML = "Might Update...";
+                    each_upt.style.backgroundColor = "lightgreen";
+                    each_upt.style.textAlign = "center";
+                    each_upt.style.fontSize = "30px";
+                    each_upt.style.borderRadius = "20px";
+                }
+            }
+            
+            var date_pinn = new Date(data[i].Date.substring(1, 11));
+            var date_today = new Date();
+            var date_every = data[i].Date.substring(11);
+            var time_dif = date_today.getTime() - date_pinn.getTime();
+            var count_day = Math.round(time_dif / (1000 * 60 * 60 * 24));
+            if(count_day % date_every == 0){
+                each_upt.innerHTML = "Update!";
+                each_upt.style.backgroundColor = "lightgreen";
+                each_upt.style.textAlign = "center";
+                each_upt.style.fontSize = "30px";
+                each_upt.style.borderRadius = "20px";
+            }
+            if(count_day % date_every == 1){
+                each_upt.innerHTML = "Check Translate";
                 each_upt.style.backgroundColor = "lightgreen";
                 each_upt.style.textAlign = "center";
                 each_upt.style.fontSize = "30px";
@@ -615,6 +637,9 @@ function appenddata(data){
         }
         else if(date == "n"){
             datelast = "Unknown";
+        }
+        else if(date.substring(0, 1) == "n"){
+            datelast = "Every " + date.substring(11) + " days";
         }
         
         return datelast;
