@@ -186,7 +186,7 @@ function appenddata(data){
             partt = 0;
             main.innerHTML = "";
             for(var i = 0; i < data.length; i++){
-                if(data[i].Date == dategets){create(i);}
+                if(data[i].Date.substring(0, 1) == dategets){create(i);}
             }
         }
     };
