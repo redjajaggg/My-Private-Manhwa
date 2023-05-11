@@ -250,6 +250,7 @@ function appenddata(data){
             each_upt.style.fontSize = "30px";
             each_upt.style.borderRadius = "20px";
         }
+        var count_day_to_up = "";
         if(data[i].Date.substring(0, 1) == "n"&& data[i].Status != "end"){
             var random = Math.floor(Math.random() * (data.length + 1));
             if(data[i].Date == "n"){
@@ -267,6 +268,8 @@ function appenddata(data){
             var date_every = data[i].Date.substring(11);
             var time_dif = date_today.getTime() - date_pinn.getTime();
             var count_day = Math.round(time_dif / (1000 * 60 * 60 * 24));
+            count_day_to_up = Math.abs((count_day % date_every) - 10);
+            if(data[i].Date == "n"){count_day_to_up = "";}
             if(count_day % date_every == 0){
                 each_upt.innerHTML = "Update!";
                 each_upt.style.backgroundColor = "lightgreen";
@@ -296,7 +299,7 @@ function appenddata(data){
         each_name.innerHTML = data[i].Name;
         each_cov.appendChild(each_pic);
         if(data[i].Status == "end"){each_info.innerHTML = "Part: " + data[i].Part + "<br>" + "Date: " + covertdate(data[i].Date) + " {END}<br>" + "Number: " + data[i].Number;}
-        if(data[i].Status != "end"){each_info.innerHTML = "Part: " + data[i].Part + "<br>" + "Date: " + covertdate(data[i].Date) + "<br>" + "Number: " + data[i].Number;}
+        if(data[i].Status != "end"){each_info.innerHTML = "Part: " + data[i].Part + "<br>" + "Date: " + covertdate(data[i].Date) + " " + count_day_to_up + "<br>" + "Number: " + data[i].Number;}
         each_exp.innerHTML = "More..."
         each_exp.onclick = () => {
             window.scrollTo(0, 0);
