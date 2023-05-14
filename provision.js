@@ -28,10 +28,10 @@ function appenddata(data){
             img.setAttribute('src', data[i].Picture);
             div3.innerHTML = "^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^";
             div1.style.fontSize = "18px";
-            website.appendChild(div1);
-            website.appendChild(div2);
-            if(data[i].Picture != "n"){website.appendChild(img);}
-            website.appendChild(div3);
+            manhtia.appendChild(div1);
+            manhtia.appendChild(div2);
+            if(data[i].Picture != "n"){manhtia.appendChild(img);}
+            manhtia.appendChild(div3);
         }
 
     }
