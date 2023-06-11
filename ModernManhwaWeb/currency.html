@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.rawgit.com/Keyang/node-csvtojson/d41f44aa/browser/csvtojson.min.js"></script>
+    <title>Manhtia's Currency</title>
+    <link rel="icon" href="https://i.pinimg.com/564x/6f/b1/fa/6fb1fa3c16a2aa37a4ab3d7e192b7c2d.jpg">
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="currency.css">
+</head>
+<body>
+    <div id="data" class="moderndiv">
+        <div id="won" class="datas">
+            <h2>Won To Baht</h2>
+            <input type="text" id="wexchange" style="width: 80px;"> ₩ = 1 ฿<br>
+        </div>
+        <div id="dollar" class="datas">
+            <h2>Dollar To Baht</h2>
+            <input type="text" id="dexchange" style="width: 80px;"> $ = 1 ฿<br>
+        </div>
+    </div><br>
+    <div id="choose" class="moderndiv">
+        I. Normal Exchange Amount From:<input type="text" id="money" onchange="normal_rate()"> Won(₩ 원) / Dollar($ Dollar)<br>
+        II. Each Story Amount Money From:<select id="story_name" onchange="each()"></select> <label id="eachPrice"></label> Won(₩ 원) / Dollar($ Dollar)
+    </div><br>
+    <div id="show" class="moderndiv">
+        I. Normal Exchange Amount To(Show in Baht): <label id="normalshowd"></label> <label id="normalshoww"></label> Baht<br>
+        II. Each Story Exchange Amount To(Show in Baht): <label id="eachshow"></label><br>Rate:<select id="ratedollar" onchange="each()"></select>
+    </div>
+    <script src="currency.js"></script>
+</body>
+</html>

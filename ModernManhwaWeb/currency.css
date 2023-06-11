@@ -1,0 +1,34 @@
+.moderndiv{
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+h2{
+    text-decoration: underline;
+}
+.datas{
+    border-radius: 22px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    width: 310px;
+    margin-left: auto;
+    margin-right: auto;
+}
+#money{
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: solid black;
+    width: 200px;
+}
+#choose{
+    text-align: left;
+}
+#show{
+    text-align: left;
+}
+select{
+    width: 200px;
+    border: 7px;
+    padding: 5px;
+}
