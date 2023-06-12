@@ -37,7 +37,7 @@ function main_usd(){
 
     var USDTHB = document.getElementById("dexchange").value;
 
-    document.getElementById("normalshowd").innerHTML = "$" + total(USDTHB, document.getElementById("money").value);
+    document.getElementById("normalshowd").innerHTML = "$" + total(USDTHB, document.getElementById("money").value).toFixed(3);
     
 }
 
@@ -45,7 +45,7 @@ function main_krw(){
 
     var KRWTHB = document.getElementById("wexchange").value;
 
-    document.getElementById("normalshoww").innerHTML = "₩" + total(KRWTHB, document.getElementById("money").value);
+    document.getElementById("normalshoww").innerHTML = "₩" + total(KRWTHB, document.getElementById("money").value).toFixed(3);
     
 }
 
@@ -74,15 +74,15 @@ function each(){
         if(price.includes("w") && price.includes("d")){
             var totalw = total(document.getElementById("wexchange").value, price.substring(price.indexOf("w") + 1, price.indexOf("d")));
             var totald = total(document.getElementById("dexchange").value, (price.substring(price.indexOf("d") + 1) / 300) * dollarRate);
-            document.getElementById("eachshow").innerHTML = "₩" + totalw.toFixed(2) + " $" + totald.toFixed(2) + " AND " + diff(totald, totalw) + " DATAPRICE: " + price;
+            document.getElementById("eachshow").innerHTML = "₩" + totalw.toFixed(3) + " $" + totald.toFixed(3) + " AND " + diff(totald, totalw) + " DATAPRICE: " + price;
         }
         if(price.includes("w") && !price.includes("d")){
             var totalw = total(document.getElementById("wexchange").value, price.substring(price.indexOf("w") + 1));
-            document.getElementById("eachshow").innerHTML = "₩" + totalw.toFixed(2) + " DATAPRICE: " + price;
+            document.getElementById("eachshow").innerHTML = "₩" + totalw.toFixed(3) + " DATAPRICE: " + price;
         }
         if(!price.includes("w") && price.includes("d")){
             var totald = total(document.getElementById("dexchange").value, (price.substring(price.indexOf("d") + 1) / 300) * dollarRate);
-            document.getElementById("eachshow").innerHTML =" $" + totald.toFixed(2) + " DATAPRICE: " + price;
+            document.getElementById("eachshow").innerHTML =" $" + totald.toFixed(3) + " DATAPRICE: " + price;
         }
     });
     
