@@ -18,15 +18,25 @@
         <div id="dollar" class="datas">
             <img src="https://i.pinimg.com/564x/92/ee/bf/92eebf76257e8bca0843069becf97418.jpg" width="70px" style="border-radius: 7px;"><h2>Dollar To Baht</h2>
             <input type="text" id="dexchange" style="width: 80px;"> ฿ = 1 $<br>
-        </div>
+        </div><br>
+        <div>Choose API Key: 
+            <select id="crate" onchange="normal_rate()">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+        </div><br>
+        If ERROR Choose other API KEY.
     </div><br>
     <div id="choose" class="moderndiv">
         I. Normal Exchange Amount From:<input type="text" id="money" onchange="normal_rate()"> Won(₩ 원) / Dollar($ Dollar)<br>
-        II. Each Story Amount Money From:<select id="story_name" onchange="each()"></select> Won(₩ 원) / Dollar($ Dollar)
+        II. Each Story Amount Money From:<select id="story_name" onchange="each()"></select> Won(₩ 원) / Dollar($ Dollar)<br>Rate:<select id="ratedollar" onchange="each()"></select>
     </div><br>
     <div id="show" class="moderndiv">
         I. Normal Exchange Amount To(Show in Baht):<br><br><label id="normalshowd"></label> <label id="normalshoww"></label> Baht<br><br>
-        II. Each Story Exchange Amount To(Show in Baht):<br><br><label id="eachshow">Waiting...</label><br><br>Rate:<select id="ratedollar" onchange="each()"></select>
+        II. Each Story Exchange Amount To(Show in Baht):<br><br><label id="eachshow">Waiting...</label><br><br>
     </div>
     <script src="currency.js"></script>
 </body>
