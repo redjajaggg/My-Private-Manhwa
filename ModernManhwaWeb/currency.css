@@ -3,6 +3,7 @@
     margin-left: auto;
     margin-right: auto;
     text-align: center;
+    padding: 5px;
 }
 h2{
     text-decoration: underline;
@@ -31,4 +32,10 @@ select{
     width: 200px;
     border: 7px;
     padding: 5px;
+}
+label{
+    font-size: 20px;
+    border-radius: 10px;
+    padding: 3px;
+    text-decoration: underline red;
 }
