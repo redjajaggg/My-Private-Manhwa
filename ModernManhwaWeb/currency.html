@@ -12,21 +12,21 @@
 <body>
     <div id="data" class="moderndiv">
         <div id="won" class="datas">
-            <h2>Won To Baht</h2>
-            <input type="text" id="wexchange" style="width: 80px;"> ₩ = 1 ฿<br>
-        </div>
+            <img src="https://i.pinimg.com/564x/26/16/8c/26168cddf75348cc28299de4daddcb5b.jpg" width="70px" style="border-radius: 7px;"><h2>Won To Baht</h2>
+            <input type="text" id="wexchange" style="width: 80px;"> ฿ = 1 ₩<br>
+        </div><br>
         <div id="dollar" class="datas">
-            <h2>Dollar To Baht</h2>
-            <input type="text" id="dexchange" style="width: 80px;"> $ = 1 ฿<br>
+            <img src="https://i.pinimg.com/564x/92/ee/bf/92eebf76257e8bca0843069becf97418.jpg" width="70px" style="border-radius: 7px;"><h2>Dollar To Baht</h2>
+            <input type="text" id="dexchange" style="width: 80px;"> ฿ = 1 $<br>
         </div>
     </div><br>
     <div id="choose" class="moderndiv">
         I. Normal Exchange Amount From:<input type="text" id="money" onchange="normal_rate()"> Won(₩ 원) / Dollar($ Dollar)<br>
-        II. Each Story Amount Money From:<select id="story_name" onchange="each()"></select> <label id="eachPrice"></label> Won(₩ 원) / Dollar($ Dollar)
+        II. Each Story Amount Money From:<select id="story_name" onchange="each()"></select> Won(₩ 원) / Dollar($ Dollar)
     </div><br>
     <div id="show" class="moderndiv">
-        I. Normal Exchange Amount To(Show in Baht): <label id="normalshowd"></label> <label id="normalshoww"></label> Baht<br>
-        II. Each Story Exchange Amount To(Show in Baht): <label id="eachshow"></label><br>Rate:<select id="ratedollar" onchange="each()"></select>
+        I. Normal Exchange Amount To(Show in Baht):<br><br><label id="normalshowd"></label> <label id="normalshoww"></label> Baht<br><br>
+        II. Each Story Exchange Amount To(Show in Baht):<br><br><label id="eachshow">Waiting...</label><br><br>Rate:<select id="ratedollar" onchange="each()"></select>
     </div>
     <script src="currency.js"></script>
 </body>
