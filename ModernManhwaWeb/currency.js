@@ -13,12 +13,32 @@ fetch(data_csv_more).then(result=>result.text()).then(function (csvtext){return 
 document.getElementById("dexchange").disabled = true;
 document.getElementById("wexchange").disabled = true;
 document.getElementById("money").value = 100;
-
-var url_usd = "https://v6.exchangerate-api.com/v6/9864303fce8c0e27b80fb812/latest/USD";
-var url_krw = "https://v6.exchangerate-api.com/v6/9864303fce8c0e27b80fb812/latest/KRW";
-
 normal_rate();
 function normal_rate(){
+    
+    var chooseRate = document.getElementById("crate").value;
+    var url_usd = "";
+    var url_krw = "";
+    if(chooseRate == "1"){
+        url_usd = "https://v6.exchangerate-api.com/v6/9864303fce8c0e27b80fb812/latest/USD";
+        url_krw = "https://v6.exchangerate-api.com/v6/9864303fce8c0e27b80fb812/latest/KRW";
+    }
+    if(chooseRate == "2"){
+        url_usd = "https://v6.exchangerate-api.com/v6/1072c71013ba197218e2146e/latest/USD";
+        url_krw = "https://v6.exchangerate-api.com/v6/1072c71013ba197218e2146e/latest/KRW";
+    }
+    if(chooseRate == "3"){
+        url_usd = "https://v6.exchangerate-api.com/v6/ffc32a4903e43dc48857ac53/latest/USD";
+        url_krw = "https://v6.exchangerate-api.com/v6/ffc32a4903e43dc48857ac53/latest/KRW";
+    }
+    if(chooseRate == "4"){
+        url_usd = "https://v6.exchangerate-api.com/v6/82e7d72d97ed431e4cfd4e6c/latest/USD";
+        url_krw = "https://v6.exchangerate-api.com/v6/82e7d72d97ed431e4cfd4e6c/latest/KRW";
+    }
+    if(chooseRate == "5"){
+        url_usd = "https://v6.exchangerate-api.com/v6/afffea8bf48196d6d4d0d5a2/latest/USD";
+        url_krw = "https://v6.exchangerate-api.com/v6/afffea8bf48196d6d4d0d5a2/latest/KRW";
+    }
     fetch(url_usd).then(response => response.json()).then(result => {
         var rUSDTHB = result.conversion_rates.THB;
         document.getElementById("dexchange").value = rUSDTHB;
@@ -52,7 +72,7 @@ function main_krw(){
 function add_rate(){
     fetch(data_csv_normal).then(result=>result.text()).then(function (csvtext){return csv().fromString(csvtext);}).then(function(data){
         for(var i = 0; i < data.length; i++){
-            if(data[i].Group == "ratedollar"){
+            if(data[i].Group == "rate"){
                 var opt = document.createElement('option');
                 opt.value = data[i].Info;
                 opt.innerHTML = data[i].Name;
@@ -66,23 +86,42 @@ function each(){
     const data_csv_mores = "https://docs.google.com/spreadsheets/d/1vAmEFn17c6kJMQwJ5JPYlvtWnRRweM8O-uk1mwn5xgU/export?format=csv";
     var dollarRate = document.getElementById("ratedollar").value;
     var name = document.getElementById("story_name").value;
+    var sel = document.getElementById("ratedollar");
+    var text = sel.options[sel.selectedIndex].text;
     fetch(data_csv_mores).then(results=>results.text()).then(function (csvtexts){return csv().fromString(csvtexts);}).then(function(csvs){
         var names = [];
         for(var i = 0; i < csvs.length; i++){names.push(csvs[i].Name);}
         var index = names.indexOf(name);
         var price = csvs[index].Price;
+
+        var currency = 0; //rate exchange
+        var numberUnit = text.substring(text.indexOf("/") + 1); // /23unit
+        var ratePerUnit = dollarRate;
+        
+        if(text.includes("RateDollar")){
+            currency = document.getElementById("dexchange").value;
+        }
+        if(text.includes("RateWon")){
+            currency = document.getElementById("wexchange").value;
+        }
+
         if(price.includes("w") && price.includes("d")){
+            //normal won
             var totalw = total(document.getElementById("wexchange").value, price.substring(price.indexOf("w") + 1, price.indexOf("d")));
-            var totald = total(document.getElementById("dexchange").value, (price.substring(price.indexOf("d") + 1) / 300) * dollarRate);
+            //dollar or else
+            var totald = total(currency, ((price.substring(price.indexOf("d") + 1) / numberUnit) * ratePerUnit));
             document.getElementById("eachshow").innerHTML = "₩" + totalw.toFixed(3) + " $" + totald.toFixed(3) + " AND " + diff(totald, totalw) + " DATAPRICE: " + price;
         }
         if(price.includes("w") && !price.includes("d")){
+            //normal won
             var totalw = total(document.getElementById("wexchange").value, price.substring(price.indexOf("w") + 1));
             document.getElementById("eachshow").innerHTML = "₩" + totalw.toFixed(3) + " DATAPRICE: " + price;
         }
         if(!price.includes("w") && price.includes("d")){
-            var totald = total(document.getElementById("dexchange").value, (price.substring(price.indexOf("d") + 1) / 300) * dollarRate);
-            document.getElementById("eachshow").innerHTML =" $" + totald.toFixed(3) + " DATAPRICE: " + price;
+            //dollar or else
+            var totald = total(currency, ((price.substring(price.indexOf("d") + 1) / numberUnit) * ratePerUnit));
+            document.getElementById("eachshow").innerHTML = "$" + totald.toFixed(3) + " DATAPRICE: " + price;
+            console.log(currency);
         }
     });
     
