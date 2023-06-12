@@ -49,14 +49,89 @@ function main(data){
         se.value = document.getElementById("page").options[document.getElementById("page").selectedIndex - 1].text;
         clicks();
     }
-    document.getElementById("uptodays").onclick = () => {
+    document.getElementById("filter").onchange = () => {
         document.getElementById("content").innerHTML = "";
-        for(var i = 0; i < data.length; i++){
-            const today = new Date();
-            var getday = today.getDay();
-            if(getday == 0){getday = 7;}
-            if(getday == data[i].Date && data[i].Status != "end"){create(data, i);}
+        var value = document.getElementById("filter").value;
+        if(value == "none"){
+            clicks();
         }
+        if(value == "yes"){
+            for(var i = 0; i < data.length; i++){
+                if(data[i].Website == value){create(data, i);}
+            }
+        }
+        if(value == "no"){
+            for(var i = 0; i < data.length; i++){
+                if(data[i].Website == value){create(data, i);}
+            }
+        }
+        if(value == "ongoing"){
+            for(var i = 0; i < data.length; i++){
+                if(data[i].Status == value){create(data, i);}
+            }
+        }
+        if(value == "end"){
+            for(var i = 0; i < data.length; i++){
+                if(data[i].Status == value){create(data, i);}
+            }
+        }
+        if(value == "uptoday"){
+            for(var i = 0; i < data.length; i++){
+                const today = new Date();
+                var getday = today.getDay();
+                if(getday == 0){getday = 7;}
+                if(getday == data[i].Date && data[i].Status != "end"){create(data, i);}
+            }
+        }
+        if(value == "upyesterday"){
+            for(var i = 0; i < data.length; i++){
+                const today = new Date();
+                var getday = today.getDay();
+                if(getday == 0){getday = 7;}
+                if(getday - 1 == data[i].Date && data[i].Status != "end"){create(data, i);}
+            }
+        }
+        if(value == "n"){
+            for(var i = 0; i < data.length; i++){
+                if(data[i].Date == value){create(data, i);}
+            }
+        }
+        if(value == "1"){
+            for(var i = 0; i < data.length; i++){
+                if(data[i].Date == value){create(data, i);}
+            }
+        }
+        if(value == "2"){
+            for(var i = 0; i < data.length; i++){
+                if(data[i].Date == value){create(data, i);}
+            }
+        }
+        if(value == "3"){
+            for(var i = 0; i < data.length; i++){
+                if(data[i].Date == value){create(data, i);}
+            }
+        }
+        if(value == "4"){
+            for(var i = 0; i < data.length; i++){
+                if(data[i].Date == value){create(data, i);}
+            }
+        }
+        if(value == "5"){
+            for(var i = 0; i < data.length; i++){
+                if(data[i].Date == value){create(data, i);}
+            }
+        }
+        if(value == "6"){
+            for(var i = 0; i < data.length; i++){
+                if(data[i].Date == value){create(data, i);}
+            }
+        }
+        if(value == "7"){
+            for(var i = 0; i < data.length; i++){
+                if(data[i].Date == value){create(data, i);}
+            }
+        }
+        
     }
     for(var i = 0; i < numcontPerpage; i++){
         create(data, i);
