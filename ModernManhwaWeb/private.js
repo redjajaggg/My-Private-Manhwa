@@ -61,9 +61,11 @@ function create(data, eachMature, i, name){
     name_div.style.fontWeight = "700";
     name_div.setAttribute("id", "name");
 
+    var status = "Ongoing";
+    if(eachMature[index].Status == "Finish"){status = "Finish";}
     var link = "<a href='" + eachMature[index].Link + "'>DataBase</a>";
     var view = "<a href='" + data[i].Name + "'>Explore</a>";
-    data_div.innerHTML = "View: " + view + "<br>Edit: " + link;
+    data_div.innerHTML = "View: " + view + "<br>Edit: " + link + "<br>Status: " + status;
     data_div.style.width = "120px";
     data_div.style.float = "left";
 
