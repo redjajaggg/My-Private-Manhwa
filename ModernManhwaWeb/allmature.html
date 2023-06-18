@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.rawgit.com/Keyang/node-csvtojson/d41f44aa/browser/csvtojson.min.js"></script>
+    <title>Manhtia</title>
+    <link rel="icon" href="https://i.pinimg.com/564x/6f/b1/fa/6fb1fa3c16a2aa37a4ab3d7e192b7c2d.jpg">
+</head>
+<body>
+    <div id="head">
+        Choose the name.<select id="name" style="width: 200px;"><option>Name</option></select><br>
+    <div id="content" style="border: solid black; position: sticky; top: 0px; background-color: white;">
+        Choose the part.<select id="part" style="width: 120px;"><option>None</option></select><button id="prev">Prev</button><button id="next">Next</button><button id="searcht">Search</button><input type="radio" id="choose" name="a" value="one">Link1<input type="radio" id="choose" name="a" value="two">Link2<input type="radio" id="choose" name="a" value="three">Link3<br>
+    </div>link1 is Hard load Link2 is Normal load(Recommend) Link3 is fast load.**
+    <div id="show" style="width: 310px; font-size:0; margin-left: auto; margin-right: auto;"></div>
+    <div id="bottom">
+        <br>© 2023 Manhtia. Website source reserves to Manhtia, Contents credit to owner.<br>
+    </div>
+</body>
+<script>
+    const data_csv_mature = "https://docs.google.com/spreadsheets/d/1LGJg6Jl3qV2IQfknt2xOvmvJuKtUaVWMSOcN1HrnHuc/export?format=csv";
+    fetch(data_csv_mature).then(result=>result.text()).then(function (csvtext){return csv().fromString(csvtext);}).then(function(csv){mature(csv);});
+
+    function mature(data){
+
+        var datalist = document.getElementById("name");
+        for(var i = 0; i < data.length; i++){
+            const option = document.createElement('option');
+            option.text = data[i].Name;
+            option.value = data[i].Name;
+            datalist.appendChild(option);
+        }
+
+        datalist.onchange = () => {
+            document.getElementById("part").innerHTML = "";
+            add_part(datalist.value, data);
+        }
+
+    }
+
+    function add_part(name, data){
+
+        for(var i = 0; i < data.length; i++){
+
+            if(data[i].Name == name){
+
+                var partPop = [];
+                var data_get = data[i].Link;
+                var read_link = data_get.replace("edit?usp=sharing", "export?format=csv");
+                fetch(read_link).then(result=>result.text()).then(function (csvtext){return csv().fromString(csvtext);}).then(function(csv){
+                    for(var j = 0; j < csv.length; j++){
+                        if(!partPop.includes(csv[j].Part)){
+                            partPop.push(csv[j].Part);
+                        }
+                    }
+                    var datalist = document.getElementById("part");
+                    for(const names of partPop){
+                        const option = document.createElement('option');
+                        option.text = names;
+                        option.value = names;
+                        datalist.appendChild(option);
+                    }
+                    document.getElementById("part").onchange = () => {
+                        create_button(csv, partPop);
+                    };
+                    document.getElementById("next").onclick = () => {
+                        const se = document.querySelector('#part');
+                        se.value = document.getElementById("part").options[document.getElementById("part").selectedIndex + 1].text;
+                        create_button(csv, partPop);
+                    };
+                    document.getElementById("prev").onclick = () => {
+                        const se = document.querySelector('#part');
+                        se.value = document.getElementById("part").options[document.getElementById("part").selectedIndex - 1].text;
+                        create_button(csv, partPop);
+                    };
+                    
+                });
+
+            }
+
+        }
+
+    }
+
+    function create_button(data, partPop){
+
+        for(var i = 0; i < partPop.length; i++){
+
+            if(partPop[i] == document.getElementById("part").value){
+
+                document.getElementById("show").innerHTML = "";
+                create(data, document.getElementById("part").value);
+
+            }
+
+        }
+        
+    }
+
+    function create(data, part){
+
+        for(var i = 0; i < data.length; i++){
+
+            if(data[i].Part == part){
+
+                var img = document.createElement("img");
+                if(document.querySelector('input[name = a]:checked').value == "one"){
+                    img.setAttribute("src", data[i].Link1);
+                }
+                if(document.querySelector('input[name = a]:checked').value == "two"){
+                    img.setAttribute("src", data[i].Link2);
+                }
+                if(document.querySelector('input[name = a]:checked').value == "three"){
+                    img.setAttribute("src", data[i].Link3);
+                }
+                img.style.width = "320px";
+                document.getElementById("show").appendChild(img);
+
+            }
+
+        }
+
+    }
+</script>
+</html>
