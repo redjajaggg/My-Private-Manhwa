@@ -34,7 +34,7 @@
         }
 
         datalist.onchange = () => {
-            document.getElementById("part").innerHTML = "";
+            document.getElementById("part").innerHTML = "<option>None</option>";
             add_part(datalist.value, data);
         }
 
