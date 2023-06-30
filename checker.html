@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.rawgit.com/Keyang/node-csvtojson/d41f44aa/browser/csvtojson.min.js"></script>
+    <title>Manhtia</title>
+    <link rel="icon" href="https://i.pinimg.com/564x/6f/b1/fa/6fb1fa3c16a2aa37a4ab3d7e192b7c2d.jpg">
+    <link rel="stylesheet" href="checker.css">
+</head>
+<body>
+    <h2>Online Checker</h2>**Please always reload after finish each story for accuracy.<br>
+    Choose: <select id="name" onchange="search()"><option>-</option></select>
+    <div>
+        <h3>Information</h3>
+        <img id="cover" src="https://i.pinimg.com/564x/6f/b1/fa/6fb1fa3c16a2aa37a4ab3d7e192b7c2d.jpg">
+        <div>
+            <h4>Main Data <a href="https://docs.google.com/spreadsheets/d/12OgnnIYoeG3oa5prcZ5HgzjuECPCk4FmBhCf_ecV_TY/edit#gid=1960619729">Database</a></h4>
+            Name: <label id="getname">null</label><br>
+            Part: <label id="part">null</label><br>
+            Number: <label id="number">null</label><br>
+            Status: <label id="status">null</label><br>
+            Website: <label id="website">null</label><br>
+            Time: <label id="time">null</label><br>
+            Date: <label id="date">null</label><br>
+        </div>
+        <div>
+            <h4>More Data <a href="https://docs.google.com/spreadsheets/d/1vAmEFn17c6kJMQwJ5JPYlvtWnRRweM8O-uk1mwn5xgU/edit#gid=0">Database</a></h4>
+            Associated name: <label id="assname">null</label><br>
+            Nation: <label id="nation">null</label><br>
+            Genre: <label id="genre">null</label><br>
+            Rate: <label id="rate">null</label><br>
+            Spoil: <label id="spoil">null</label><br>
+            Notificate: <label id="notificate">null</label><br>
+            Price: <label id="price">null</label><br>
+        </div>
+        <div>
+            <h4>Website Data</h4>
+            <div id="webdata">
+
+                <img id="manhwacover" src="https://i.pinimg.com/564x/6f/b1/fa/6fb1fa3c16a2aa37a4ab3d7e192b7c2d.jpg">
+                <img id="novelcover" src="https://i.pinimg.com/564x/6f/b1/fa/6fb1fa3c16a2aa37a4ab3d7e192b7c2d.jpg">
+                <div>Manhwa Cover / Novel Cover</div>
+                Caption / Description: <div id="caption"></div>
+            </div>
+        </div>
+        <div>
+            <h4>Portrayal Data</h4>
+            <div id="portrayal">
+                CountAll: <label id="countall">null</label> Main(count): <label id="maincount">null</label> Sub(count): <label id="subcount">null</label>
+            </div>
+        </div>
+        <div>
+            <h4>Mature Data</h4>
+            <div id="mature">
+                Status: <label id="maturestatus">null</label>
+            </div>
+        </div>
+        
+
+    </div>
+    
+</body>
+<script src="checker.js"></script>
+</html>

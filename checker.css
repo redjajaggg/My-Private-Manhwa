@@ -1,0 +1,10 @@
+body{
+    font-size: 18px;
+    font-family: Tahoma, Verdana, Segoe, sans-serif;
+}
+select{
+    width: 200px;
+}
+img{
+    width: 150px;
+}
