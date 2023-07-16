@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.rawgit.com/Keyang/node-csvtojson/d41f44aa/browser/csvtojson.min.js"></script>
+    <title>Manhtia</title>
+    <link rel="icon" href="https://i.pinimg.com/564x/6f/b1/fa/6fb1fa3c16a2aa37a4ab3d7e192b7c2d.jpg">
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="privatestyle.css">
+</head>
+<body>
+    <div id="upstate" class="moderndiv" style="width: 99%;">
+        <label class="top" id="notificate" style="display: none;"></label>
+    </div>
+    <h3 style="text-align: center;"><a href="https://redjajaggg.github.io/My-Private-Manhwa/ModernManhwaWeb/allmature.html">Mature Content Viewer</a></h3>
+    <div class="moderndiv" id="login">
+        <form id="loginform">
+            <h2>Are you already 18?</h2><br>
+            <label>Answer: </label>
+            <input id="check" type="text" disabled><br><br>
+            <button id="logbut" type="submit">Access</button> Aged 18 or above.<br>
+            If Some link might be not able to Open. Use other version to Open. <a href="https://redjajaggg.github.io/My-Private-Manhwa/page4.html">here</a>
+        </form>
+    </div><div id="others" style="text-align: center; display: none;">Other: <a href="Other">View</a> | <a href="https://redjajaggg.github.io/My-Private-Manhwa/ModernManhwaWeb/maturecheck.html">Mature Manager</a>
+    <br><button type="button" id="opensearch" onclick="opensearch()"><img id="search" style="width: 25px; border-radius: 50%;" src="https://i.pinimg.com/564x/20/84/d5/2084d52de67b409823d500f04f7f15c3.jpg"></button> Page: <select name="page" id="page" onchange="onc()"></select> <button type="button" id="prev">Prev</button><button type="button" id="next">Next</button>|<button id="go" type="submit">Go</button><button type="button" id="all">All</button>
+    </div>
+    <div id="data" class="moderndiv" style="display: none; width: 99%;">
+        Check: 
+        <select id="markasmature" onchange="search(0)">
+            <option>-</option>
+            <option value="mark as mature">Not Exists(Soon)</option>
+        </select> Or 
+        <select id="finish" onchange="search(1)">
+            <option>-</option>
+            <option value="Finish">Finish</option>
+        </select>
+        <div id="data_show_search"></div>
+    </div><br>
+    <div id="content" class="moderndiv">
+
+    </div><br>
+    <div id="bottom">
+        contract: <a href="https://discordapp.com/users/1055326431804137504/"><img style="width: 30px; border-radius: 10px;" src="https://i.pinimg.com/564x/66/1e/cf/661ecf66bda49150b44d25e4440e2bb8.jpg"></a> Location: Bangkok, Thailand
+        <br>"Attention! This website is personal collection not for commercial"
+        <br>© 2023 Manhtia. Website source reserves to Manhtia, Contents credit to owner.<br>
+    </div>
+</body>
+<script src="private.js"></script>
+</html>
