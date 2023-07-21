@@ -32,15 +32,20 @@ function main(data){
 
         if(data[i].Name == name){
 
+            var told = "*This Story might update every 10 days.";
+            var time = "";
+            if(data[i].Date != "n"){told = "";}
+            if(data[i].Histotime == "H"){time = "Histology";}
+            if(data[i].Histotime == "M"){time = "Modern";}
             document.getElementById("cover").setAttribute("src", data[i].Cover);
             document.getElementById("getname").innerHTML = data[i].Name;
             document.getElementById("part").innerHTML = data[i].Part;
             document.getElementById("number").innerHTML = data[i].Number;
             document.getElementById("status").innerHTML = data[i].Status;
             document.getElementById("website").innerHTML = data[i].Website;
-            document.getElementById("time").innerHTML = data[i].Histotime;
-            document.getElementById("date").innerHTML = data[i].Date;
-
+            document.getElementById("time").innerHTML = time + " (" + data[i].Histotime + ")";
+            document.getElementById("date").innerHTML = convert_date(data[i].Date) + " (" + data[i].Date + ") " + told;
+            document.getElementById("alllink").innerHTML = "<br>Raw: " + data[i].Rawweb + "<br>Newtoki: " + data[i].Newtoki + "<br>Translate: " + data[i].Translate + "<br>Other: " + data[i].Otherweb;
         }
 
     }
@@ -55,13 +60,23 @@ function more(data){
 
         if(data[i].Name == name){
 
+            var country = "";
+            var purc = "";
+            if(data[i].Nation == "kr"){country = "Korean";}
+            if(data[i].Nation == "cn"){country = "Chinese";}
+            if(data[i].Nation == "th"){country = "Thai";}
+            if(data[i].Purchase == "y"){purc = "Purchase for chapter.";}
+            if(data[i].Purchase == "n"){purc = "Not Purchase for chapter.";}
+            if(data[i].Purchase == "s"){purc = "Purchase some suitable chapter.";}
+            if(data[i].Purchase == "w"){purc = "Awaiting for dicision.";}
             document.getElementById("assname").innerHTML = data[i].AssName;
-            document.getElementById("nation").innerHTML = data[i].Nation;
+            document.getElementById("nation").innerHTML = country + " (" + data[i].Nation + ")";
             document.getElementById("genre").innerHTML = data[i].Type;
             document.getElementById("rate").innerHTML = data[i].Rate;
             document.getElementById("spoil").innerHTML = data[i].Spoil;
             document.getElementById("notificate").innerHTML = data[i].Notificate;
             document.getElementById("price").innerHTML = data[i].Price;
+            document.getElementById("pur").innerHTML = purc + " (" + data[i].Purchase + ")";
 
         }
 
@@ -129,6 +144,20 @@ function webs(data){
 
     }
     
+}
+function convert_date(date){
+    var day = "";
+    switch(date){
+        case "1": day = "Mon-Tue"; break;
+        case "2": day = "Tue-Wed"; break;
+        case "3": day = "Wed-Thu"; break;
+        case "4": day = "Thu-Fri"; break;
+        case "5": day = "Fri-Sat"; break;
+        case "6": day = "Sat-Sun"; break;
+        case "7": day = "Sun-Mon"; break;
+        case "n": day = "Unknown"; break;
+    }
+    return day;
 }
 
 
