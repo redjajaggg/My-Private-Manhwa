@@ -15,6 +15,7 @@ document.getElementById("logbut").onclick = () => {
     }
 
 };
+
 document.getElementById("logbut").click();
 var eachMature;
 
@@ -60,6 +61,28 @@ function main(data){
 
         }
     }
+    var datalist = document.getElementById("list");
+
+    for(var o = 0; o < data.length; o++){
+        if(name.includes(data[o].Name)){
+            const option = document.createElement('option');
+            option.text = data[o].Name;
+            option.value = data[o].Name;
+            datalist.appendChild(option);
+        }
+        
+    }
+    document.getElementById("namesg").onchange = () => {
+
+        document.getElementById("content").innerHTML = "";
+        for(var o = 0; o < data.length; o++){
+            if(data[o].Name == document.getElementById("namesg").value){
+                create(data, eachMature, o, name);
+                break;
+            }
+        }
+
+    };
     document.getElementById("go").onclick = () => {
         document.getElementById("content").innerHTML = "";
         num_page = document.getElementById("page").options[document.getElementById("page").selectedIndex].text;
@@ -147,7 +170,7 @@ function search(num){
 
                     var datas = document.createElement("label");
                     var br = document.createElement("br");
-                    datas.innerHTML = "Name: >>" + csv[i].Name + "<< has been Finished upload mature.";
+                    datas.innerHTML = "Name: >>" + csv[i].Name;
                     document.getElementById("data_show_search").appendChild(datas);
                     document.getElementById("data_show_search").appendChild(br);
 
@@ -168,6 +191,8 @@ function create(data, eachMature, i, name){
     var name_div = document.createElement("div");
     var data_div = document.createElement("div");
     var cove_div = document.createElement("div");
+    var each_div = document.createElement("div");
+    var each_button = document.createElement("button");
     var cove_img = document.createElement("img");
     var views = document.createElement("label");
     var statuss = document.createElement("label");
@@ -183,12 +208,15 @@ function create(data, eachMature, i, name){
 
     var status = "Ongoing";
     if(eachMature[index].Status == "Finish"){status = "<img style='width: 20px; border-radius: 7px;' src='https://i.pinimg.com/564x/f2/ef/15/f2ef15f64d2724857a6093175a72c8d8.jpg'>";}
+    //var link = "<a href='" + eachMature[index].Link + "'>DataBase</a>";
+    //var view = "<a href='" + data[i].Name + "'>Explore</a>";
     var name_link = document.createElement('a');
-    var linkText = document.createTextNode("(Explore)");
+    var linkText = document.createTextNode("(Explore All)");
     name_link.appendChild(linkText);
     name_link.title = data[i].Name;
-    name_link.href = "https://redjajappp2.pythonanywhere.com/manhtia/private/" + data[i].Name;
-    name_link.style.width = "60px";
+    name_link.href = data[i].Name;
+    name_link.style.width = "120px";
+
 
     views.innerHTML = "View: ";
     data_div.appendChild(views);
@@ -203,10 +231,61 @@ function create(data, eachMature, i, name){
     more_link.href = "https://redjajappp2.pythonanywhere.com/manhtia/content/" + data[i].Name;
     more_link.style.width = "60px";
     data_div.appendChild(br);
+    data_div.appendChild(each_button);
+    data_div.appendChild(each_div);
     data_div.appendChild(br2);
     data_div.appendChild(br3);
     data_div.appendChild(more_data);
     data_div.appendChild(more_link);
+    each_div.style.display = "none";
+
+    each_button.innerHTML = "Explore";
+    each_button.onclick = () => {
+        if(each_button.innerText == "Hide"){
+
+            each_button.innerText = "Explore";
+            each_div.style.display = "none";
+
+        }
+        else{
+
+            each_button.innerText = "Hide";
+            each_div.style.display = "block";
+            each_div.innerHTML = "Part Viewer";
+
+            for(var ind = 0; ind < eachMature.length; ind++){
+
+                if(eachMature[ind].Name == data[i].Name){
+
+                    var link = eachMature[ind].Link;
+                    var linkget = link.replaceAll("edit?usp=sharing", "export?format=csv")
+                    fetch(linkget).then(result=>result.text()).then(function (csvtext){return csv().fromString(csvtext);}).then(function(link){
+                        var partpop = [];
+                        for(var j = 0; j < link.length; j++){
+                            if(!partpop.includes(link[j].Part)){
+
+                                partpop.push(link[j].Part);
+                                var linkl = document.createElement("a");
+                                var linkText = document.createTextNode(link[j].Part);
+                                linkl.style.fontWeight = "500";
+                                linkl.appendChild(linkText);
+                                linkl.title = link[j].Part;
+                                linkl.href = "https://redjajappp2.pythonanywhere.com/manhtia/private/" + data[i].Name + "/" + link[j].Part;
+                                linkl.style.width = "170px";
+                                each_div.appendChild(linkl);
+                    
+                            }
+                        }
+                    });
+
+                    break;
+
+                }
+
+            }
+
+        }
+    }
 
     data_div.style.width = "120px";
     data_div.style.float = "left";
@@ -225,6 +304,14 @@ function create(data, eachMature, i, name){
     main_div.setAttribute("id", "each");
     document.getElementById("content").appendChild(main_div);
 
+}
+
+function reset(){
+    document.getElementById("namesg").value = "";
+    document.getElementById("markasmature").value = "none";
+    document.getElementById("finish").value = "none";
+    document.getElementById("data_show_search").innerHTML = "";
+    onc();
 }
 
 function normal(data){
