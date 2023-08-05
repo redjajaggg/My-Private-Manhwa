@@ -4,6 +4,7 @@
     margin-right: auto;
     text-align: center;
     padding: 5px;
+    overflow: auto;
 }
 h2{
     text-decoration: underline;
@@ -28,6 +29,12 @@ h2{
 #show{
     text-align: left;
 }
+#tasks{
+    text-align: left;
+}
+#sum{
+    text-align: left;
+}
 select{
     width: 200px;
     border: 7px;
@@ -38,4 +45,9 @@ label{
     border-radius: 10px;
     padding: 3px;
     text-decoration: underline red;
+}
+button{
+    background-color: red;
+    border-radius: 5px;
+    border: none;
 }
