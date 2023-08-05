@@ -20,12 +20,12 @@
             <input type="text" id="dexchange" style="width: 80px;"> ฿ = 1 $<br>
         </div><br>
         <div>Choose API Key: 
-            <select id="crate" onchange="normal_rate()">
+            <select id="crate" onchange="normal_rate()"><option value="5">5</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
                 <option value="4">4</option>
-                <option value="5">5</option>
+                
             </select>
         </div><br>
         If ERROR Choose other API KEY.
@@ -37,6 +37,14 @@
     <div id="show" class="moderndiv">
         I. Normal Exchange Amount To(Show in Baht):<br><br><label id="normalshowd"></label> <label id="normalshoww"></label> Baht<br><br>
         II. Each Story Exchange Amount To(Show in Baht):<br><br><label id="eachshow">Waiting...</label><br><br>
+    </div><br>
+    <div class="moderndiv">
+        <h3>Compare</h3>
+        <button onclick="newcompare()">+New</button><br><br>
+        <div id="tasks">
+            Site | Cost per Chapter | Amount Charge coins | Amount money pay for Coin or Chapter | Money per 1 Chapter (Must enter Cost per Chapter)
+        </div><button onclick="cals()">Calculate</button><br><br>
+        <div id="sum"></div>
     </div>
     <script src="currency.js"></script>
 </body>
