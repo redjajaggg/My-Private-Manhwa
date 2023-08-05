@@ -149,3 +149,86 @@ function diff(usd, krw){
     return which;
 
 }
+var index = 0;
+function newcompare(){
+
+    var div = document.createElement('div');
+    var cut = document.createElement('div');
+    var sitename = document.createElement('select');
+    var cost = document.createElement('input');
+    var coin = document.createElement('input');
+    var price = document.createElement('input');
+    var data = document.createElement('label');
+
+    cut.innerHTML = "------------------------------";
+    var sites = ['-', 'Ridibook', 'Mr.blue', 'Lezhin KR', 'Lezhin EN', 'Lezhin ES', 'Bookcube', 'Bomtoon', 'Penutoon', 'Tapas', 'Manta', 'Tappytoon', 'Other'];
+    for(const i of sites){
+        const option = document.createElement('option');
+        option.text = i;
+        option.value = i;
+        sitename.appendChild(option);
+    }
+    sitename.style.width = "100px";
+    sitename.id = "site" + index;
+    cost.id = "cost" + index;
+    cost.placeholder = "Cost per Chapter eq.coin/penut...";
+
+    coin.id = "coin" + index;
+    coin.placeholder = "Amount Charge coin";
+
+    price.id = "price" + index;
+    price.placeholder = "AmountMoneyPayCoinChapter";
+
+    data.id = "data" + index;
+    
+    div.appendChild(sitename);
+    div.appendChild(cost);
+    div.appendChild(coin);
+    div.appendChild(price);
+    div.appendChild(data);
+    div.appendChild(cut);
+    document.getElementById("tasks").appendChild(div);
+    index++;
+
+}
+function cals(){
+    for(var i = 0; i < index; i++){
+
+        //pay in coin
+        if(document.getElementById("cost" + i).value.trim() != "" && document.getElementById("coin" + i).value.trim() != ""){
+
+            var priceFromCointoMoney = document.getElementById("cost" + i).value.trim() * (document.getElementById("price" + i).value.trim() / document.getElementById("coin" + i).value.trim());
+            document.getElementById("data" + i).innerHTML = priceFromCointoMoney.toFixed(5);
+
+        }
+
+        //pay in money
+        if(document.getElementById("coin" + i).value.trim() == "" && document.getElementById("price" + i).value.trim() == ""){
+
+            document.getElementById("data" + i).innerHTML = document.getElementById("cost" + i).value.trim();
+            
+        }
+
+    }
+    var presort = {};
+    var sort = [];
+    for(var i = 0; i < index; i++){
+        var data = document.getElementById("data" + i).innerHTML;
+        presort[data] = document.getElementById("site" + i).value;
+        sort.push(data);
+    }
+    sort.sort();
+    document.getElementById("sum").innerHTML = "Summarize...";
+    var it = 1;
+    for(const i of sort){
+
+        var div = document.createElement('div');
+        div.innerHTML = "Rank: " + it + " Site: " + presort[i] + " Use: " + i;
+        document.getElementById("sum").appendChild(div);
+        it++;
+
+    }
+    sort = [];
+    it = 1;
+    
+}
