@@ -1,6 +1,11 @@
 const data_csv_normal = "https://docs.google.com/spreadsheets/d/1Mn2FDBvSjufDqNNxBn1SHVHFaCF0EnXnFDuwiS-Nbpg/export?format=csv";
 const data_csv_more = "https://docs.google.com/spreadsheets/d/1vAmEFn17c6kJMQwJ5JPYlvtWnRRweM8O-uk1mwn5xgU/export?format=csv";
 
+function randomIntFromInterval(min, max) { // min and max included 
+    return Math.floor(Math.random() * (max - min + 1) + min)
+}
+const rndInt = randomIntFromInterval(1, 5);
+document.getElementById("crate").value = rndInt;
 fetch(data_csv_more).then(result=>result.text()).then(function (csvtext){return csv().fromString(csvtext);}).then(function(csv){
     for (var i = 0; i < csv.length; i++){
         var opt = document.createElement('option');
@@ -19,25 +24,49 @@ function normal_rate(){
     var chooseRate = document.getElementById("crate").value;
     var url_usd = "";
     var url_krw = "";
+    var url_pon = "";
+    var url_eur = "";
+    var url_cny = "";
+    var url_jpy = "";
     if(chooseRate == "1"){
         url_usd = "https://v6.exchangerate-api.com/v6/9864303fce8c0e27b80fb812/latest/USD";
         url_krw = "https://v6.exchangerate-api.com/v6/9864303fce8c0e27b80fb812/latest/KRW";
+        url_pon = "https://v6.exchangerate-api.com/v6/9864303fce8c0e27b80fb812/latest/GBP";
+        url_eur = "https://v6.exchangerate-api.com/v6/9864303fce8c0e27b80fb812/latest/EUR";
+        url_cny = "https://v6.exchangerate-api.com/v6/9864303fce8c0e27b80fb812/latest/CNY";
+        url_jpy = "https://v6.exchangerate-api.com/v6/9864303fce8c0e27b80fb812/latest/JPY";
     }
     if(chooseRate == "2"){
         url_usd = "https://v6.exchangerate-api.com/v6/1072c71013ba197218e2146e/latest/USD";
         url_krw = "https://v6.exchangerate-api.com/v6/1072c71013ba197218e2146e/latest/KRW";
+        url_pon = "https://v6.exchangerate-api.com/v6/9864303fce8c0e27b80fb812/latest/GBP";
+        url_eur = "https://v6.exchangerate-api.com/v6/9864303fce8c0e27b80fb812/latest/EUR";
+        url_cny = "https://v6.exchangerate-api.com/v6/9864303fce8c0e27b80fb812/latest/CNY";
+        url_jpy = "https://v6.exchangerate-api.com/v6/9864303fce8c0e27b80fb812/latest/JPY";
     }
     if(chooseRate == "3"){
         url_usd = "https://v6.exchangerate-api.com/v6/ffc32a4903e43dc48857ac53/latest/USD";
         url_krw = "https://v6.exchangerate-api.com/v6/ffc32a4903e43dc48857ac53/latest/KRW";
+        url_pon = "https://v6.exchangerate-api.com/v6/9864303fce8c0e27b80fb812/latest/GBP";
+        url_eur = "https://v6.exchangerate-api.com/v6/9864303fce8c0e27b80fb812/latest/EUR";
+        url_cny = "https://v6.exchangerate-api.com/v6/9864303fce8c0e27b80fb812/latest/CNY";
+        url_jpy = "https://v6.exchangerate-api.com/v6/9864303fce8c0e27b80fb812/latest/JPY";
     }
     if(chooseRate == "4"){
         url_usd = "https://v6.exchangerate-api.com/v6/82e7d72d97ed431e4cfd4e6c/latest/USD";
         url_krw = "https://v6.exchangerate-api.com/v6/82e7d72d97ed431e4cfd4e6c/latest/KRW";
+        url_pon = "https://v6.exchangerate-api.com/v6/9864303fce8c0e27b80fb812/latest/GBP";
+        url_eur = "https://v6.exchangerate-api.com/v6/9864303fce8c0e27b80fb812/latest/EUR";
+        url_cny = "https://v6.exchangerate-api.com/v6/9864303fce8c0e27b80fb812/latest/CNY";
+        url_jpy = "https://v6.exchangerate-api.com/v6/9864303fce8c0e27b80fb812/latest/JPY";
     }
     if(chooseRate == "5"){
         url_usd = "https://v6.exchangerate-api.com/v6/afffea8bf48196d6d4d0d5a2/latest/USD";
         url_krw = "https://v6.exchangerate-api.com/v6/afffea8bf48196d6d4d0d5a2/latest/KRW";
+        url_pon = "https://v6.exchangerate-api.com/v6/9864303fce8c0e27b80fb812/latest/GBP";
+        url_eur = "https://v6.exchangerate-api.com/v6/9864303fce8c0e27b80fb812/latest/EUR";
+        url_cny = "https://v6.exchangerate-api.com/v6/9864303fce8c0e27b80fb812/latest/CNY";
+        url_jpy = "https://v6.exchangerate-api.com/v6/9864303fce8c0e27b80fb812/latest/JPY";
     }
     fetch(url_usd).then(response => response.json()).then(result => {
         var rUSDTHB = result.conversion_rates.THB;
@@ -48,6 +77,26 @@ function normal_rate(){
         var rKRWTHB = result.conversion_rates.THB;
         document.getElementById("wexchange").value = rKRWTHB;
         main_krw();
+    });
+    fetch(url_pon).then(response => response.json()).then(result => {
+        var rKRWTHB = result.conversion_rates.THB;
+        document.getElementById("pexchange").value = rKRWTHB;
+        main_pon();
+    });
+    fetch(url_eur).then(response => response.json()).then(result => {
+        var rUSDTHB = result.conversion_rates.THB;
+        document.getElementById("eexchange").value = rUSDTHB;
+        main_eur();
+    });
+    fetch(url_cny).then(response => response.json()).then(result => {
+        var rUSDTHB = result.conversion_rates.THB;
+        document.getElementById("yuexchange").value = rUSDTHB;
+        main_cny();
+    });
+    fetch(url_jpy).then(response => response.json()).then(result => {
+        var rUSDTHB = result.conversion_rates.THB;
+        document.getElementById("yeexchange").value = rUSDTHB;
+        main_jpy();
     });
     add_rate();
     
@@ -66,6 +115,38 @@ function main_krw(){
     var KRWTHB = document.getElementById("wexchange").value;
 
     document.getElementById("normalshoww").innerHTML = "₩" + total(KRWTHB, document.getElementById("money").value).toFixed(3);
+    
+}
+
+function main_pon(){
+
+    var KRWTHB = document.getElementById("pexchange").value;
+
+    document.getElementById("normalshowp").innerHTML = "£" + total(KRWTHB, document.getElementById("money").value).toFixed(3);
+    
+}
+
+function main_eur(){
+
+    var KRWTHB = document.getElementById("eexchange").value;
+
+    document.getElementById("normalshowe").innerHTML = "€" + total(KRWTHB, document.getElementById("money").value).toFixed(3);
+    
+}
+
+function main_cny(){
+
+    var KRWTHB = document.getElementById("yuexchange").value;
+
+    document.getElementById("normalshowyu").innerHTML = "¥" + total(KRWTHB, document.getElementById("money").value).toFixed(3);
+    
+}
+
+function main_jpy(){
+
+    var KRWTHB = document.getElementById("yeexchange").value;
+
+    document.getElementById("normalshowye").innerHTML = "¥" + total(KRWTHB, document.getElementById("money").value).toFixed(3);
     
 }
 
