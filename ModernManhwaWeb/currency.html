@@ -19,23 +19,39 @@
             <img src="https://i.pinimg.com/564x/92/ee/bf/92eebf76257e8bca0843069becf97418.jpg" width="70px" style="border-radius: 7px;"><h2>Dollar To Baht</h2>
             <input type="text" id="dexchange" style="width: 80px;"> ฿ = 1 $<br>
         </div><br>
+        <div id="ponnd" class="datas">
+            <img src="https://i.pinimg.com/564x/c9/4d/34/c94d34ec7fb5741026401b089a400b79.jpg" width="70px" style="border-radius: 7px;"><h2>Pound To Baht</h2>
+            <input type="text" id="pexchange" style="width: 80px;"> ฿ = 1 £<br>
+        </div><br>
+        <div id="euro" class="datas">
+            <img src="https://i.pinimg.com/564x/29/fe/c3/29fec372ef2e289d92a49acfbd7b618e.jpg" width="70px" style="border-radius: 7px;"><h2>Euro To Baht</h2>
+            <input type="text" id="eexchange" style="width: 80px;"> ฿ = 1 €<br>
+        </div><br>
+        <div id="yuan" class="datas">
+            <img src="https://i.pinimg.com/564x/df/23/f6/df23f6a35f04615b7cca3ad7d89675f3.jpg" width="70px" style="border-radius: 7px;"><h2>Yuan To Baht</h2>
+            <input type="text" id="yuexchange" style="width: 80px;"> ฿ = 1 ¥<br>
+        </div><br>
+        <div id="yen" class="datas">
+            <img src="https://i.pinimg.com/564x/00/29/db/0029dbad01586d410d63a3a2376d8221.jpg" width="70px" style="border-radius: 7px;"><h2>Yen To Baht</h2>
+            <input type="text" id="yeexchange" style="width: 80px;"> ฿ = 1 ¥<br>
+        </div><br>
         <div>Choose API Key: 
-            <select id="crate" onchange="normal_rate()"><option value="5">5</option>
+            <select id="crate" onchange="normal_rate()">
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
                 <option value="4">4</option>
-                
+                <option value="5">5</option>
             </select>
         </div><br>
         If ERROR Choose other API KEY.
     </div><br>
     <div id="choose" class="moderndiv">
-        I. Normal Exchange Amount From:<input type="text" id="money" onchange="normal_rate()"> Won(₩ 원) / Dollar($ Dollar)<br>
-        II. Each Story Amount Money From:<select id="story_name" onchange="each()"></select> Won(₩ 원) / Dollar($ Dollar)<br>Rate:<select id="ratedollar" onchange="each()"></select>
+        I. Normal Exchange Amount From:<input type="text" id="money" onchange="normal_rate()"> Won(₩ 원) / Dollar($ Dollar) / Other<br>
+        II. Each Story Amount Money From:<select id="story_name" onchange="each()"></select> Won(₩ 원) / Dollar($ Dollar) / Other<br>Rate:<select id="ratedollar" onchange="each()"></select>
     </div><br>
     <div id="show" class="moderndiv">
-        I. Normal Exchange Amount To(Show in Baht):<br><br><label id="normalshowd"></label> <label id="normalshoww"></label> Baht<br><br>
+        I. Normal Exchange Amount To(Show in Baht):<br><br><label id="normalshowd"></label> <label id="normalshoww"></label> <label id="normalshowp"></label> <label id="normalshowe"></label> <label id="normalshowyu"></label> <label id="normalshowye"></label> Baht<br><br>
         II. Each Story Exchange Amount To(Show in Baht):<br><br><label id="eachshow">Waiting...</label><br><br>
     </div><br>
     <div class="moderndiv">
