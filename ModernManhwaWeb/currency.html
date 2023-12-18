@@ -54,6 +54,14 @@
         I. Normal Exchange Amount To(Show in Baht):<br><br><label id="normalshowd"></label> <label id="normalshoww"></label> <label id="normalshowp"></label> <label id="normalshowe"></label> <label id="normalshowyu"></label> <label id="normalshowye"></label> Baht<br><br>
         II. Each Story Exchange Amount To(Show in Baht):<br><br><label id="eachshow">Waiting...</label><br><br>
     </div><br>
+    <div class="moderndiv" style="text-align: left;">
+        <h3>Calculate cost per chapter</h3>
+        Coin(Else)perChapter: <input id="eachcostcal" class="calit" placeholder="Number of coin/else per chapter"><br>
+        Coin(Else)perPurchase: <input id="allcostcal" class="calit" placeholder="Number of coin/else once purchase"><br>
+        Amount(Cost)perPurchase: <input id="pricecostcal" class="calit" placeholder="Price once purchase"><br>
+        <button onclick="calit()">Calculate</button><br>
+        <label id="conveycost"></label>
+    </div><br>
     <div class="moderndiv">
         <h3>Compare</h3>
         <button onclick="newcompare()">+New</button><br><br>
