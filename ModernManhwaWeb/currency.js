@@ -313,3 +313,6 @@ function cals(){
     it = 1;
     
 }
+function calit(){
+    document.getElementById("conveycost").innerHTML = `Must pay ${ ((document.getElementById("pricecostcal").value / document.getElementById("allcostcal").value) * document.getElementById("eachcostcal").value).toFixed(5) } unit(s) Per chapter.<br>Can purchase ${ Math.floor(document.getElementById("allcostcal").value / document.getElementById("eachcostcal").value)} chapter(s).`;
+}
