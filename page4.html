@@ -5,31 +5,93 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.rawgit.com/Keyang/node-csvtojson/d41f44aa/browser/csvtojson.min.js"></script>
-    <title>My Private Manhwa</title>
-    <link rel="icon" href="https://i.pinimg.com/564x/65/8d/70/658d70042f014f02a3cd0cd6bc29d7a0.jpg">
+    <title>Adult Por(love)n</title>
+    <link rel="icon" href="https://i.pinimg.com/564x/6f/b1/fa/6fb1fa3c16a2aa37a4ab3d7e192b7c2d.jpg">
 </head>
-<body>    
-    <a href="index.html"><img class="homeicon" style="width: 30px;" src="https://i.pinimg.com/564x/2b/05/8d/2b058d9e38670c731169bcdbf62652a6.jpg"></a>
-    <h2 id="contenth2">Dark content</h2>
-<!--***************************************work space*****************************************************-->
-    <label style="text-align: center;">Page contains Adult content for each R19 PORN.</label>
-    <div style="text-align: center;">
-    <br><div style="text-align: center;"><label>Name : </label>
-        <input type="text" id="name" name="name" placeholder="Choose or Type..." list="names" style="width: 100%; border: solid black 2px; border-top: none; border-left: none; border-right: none;">
-        <datalist id="names"></datalist>
-        <button type="button" id="search" class="contentbut">search</button> <button type="button" id="clearname" class="contentbut">clear</button> | <button type="button" id="allname" class="contentbut">All</button></div>
+<body>
+    <div id="head">
+    <div id="content" style="border: solid black; position: sticky; top: 0px; background-color: white;">
+        Choose the Topic.<select id="topic" style="width: 200px;" onchange="build(this)"><option>-</option></select><br>
     </div>
-    <div class="darklist" id="datashow"></div>
-    <br><br><br>
-<!--**********************************************************************************************************-->
-<section id="about_website" class="section_about">
-    <div id="about">
-        contract: <a href="https://discordapp.com/users/1055326431804137504/"><img style="width: 30px; border-radius: 10px;" src="https://i.pinimg.com/564x/66/1e/cf/661ecf66bda49150b44d25e4440e2bb8.jpg"></a> : Bangkok, Thailand<br>
-        About:<label id="version"></label> <a href="https://docs.google.com/forms/d/e/1FAIpQLSdaCP9AUgrroG45f8uz9SPU2sOXBZ8roxQ7mqXhKG1BsleVuA/viewform?usp=sf_link">Report / Help</a> | <a href="">Provision / Symbol meaning</a>
-        <br>Notice: Attention! This website(Manhtia) is a personal collection, Existing is not for commercial.
-        <br>© 2023 Manhtia All Rights are reserved. Website source reserves to Manhtia, Contents credit to owner.<br>
-    </div>
-</section>
-    <script src="private.js"></script>
+    <div id="show" style="width: 310px; font-size:0; margin-left: auto; margin-right: auto;"></div>
+    <footer>
+        <br>© 2024 Manhtia.porn Website source reserves to Manhtia.porn, Contents credit to owner.<br>
+    </footer>
 </body>
+<script>
+    /*
+        type- 
+            0 = img
+            1 = video
+            2 = html
+    */
+   //replace RPSID with sheet id, RPSNM with sheet name
+   const api = "https://script.google.com/macros/s/AKfycbwPyo50dXb4y5r4H2B0fLEVqpWKhWo58g_YmKna1cnlesJ96RhixlmQiwItAuLcuF0XbQ/exec?q=";
+   const idList = "1eN-r-dTjK8ZbtjLU2KRPWSUiuDXNj2iV2jBXthcMzCI";
+   var conveyList;
+   var name_pop = [];
+
+   //to read all id availiable
+    fetch(api + idList + "&p=Sheet1").then(data => data.json()).then(data => {
+
+        conveyList = data;
+        var datalist = document.getElementById("topic");
+
+        for(var o = 0; o < conveyList.length; o++){
+
+            if(!name_pop.includes(data[o].Topic)){
+                const option = document.createElement('option');
+                option.text = data[o].Topic;
+                option.value = data[o].Topic;
+                datalist.appendChild(option);
+                name_pop.push(data[o].Topic);
+            }
+            
+        }
+
+    })
+
+    function build(e){
+        document.getElementById("show").innerHTML = "";
+        for(var i = 0; i < conveyList.length; i++){
+
+            if(conveyList[i].Topic == e.value){
+
+                switch(conveyList[i].Type){
+                    case 0: 
+                        var img = document.createElement('img');
+                        img.setAttribute('src', conveyList[i].HTML);
+                        img.style.width = "300px";
+                        document.getElementById("show").appendChild(img);
+                        break;
+                    case 1: 
+                        var x = document.createElement("VIDEO");
+
+                        if (x.canPlayType("video/mp4")) {
+                            x.setAttribute("src", conveyList[i].HTML);
+                        }
+
+                        x.setAttribute("width", "320");
+                        x.setAttribute("controls", "controls");
+                        document.getElementById("show").appendChild(img);
+                        break;
+                    case 2: 
+                        var html = document.createElement('div');
+                        html.innerHTML = conveyList[i].HTML;
+                        html.style.width = "300px";
+                        document.getElementById("show").appendChild(html);
+                        break;
+                }
+
+                var div = document.createElement("div");
+                div.innerHTML = conveyList[i].Source;
+                document.getElementById("show").appendChild(div);
+
+            }
+
+        }
+
+    }
+   
+</script>
 </html>
