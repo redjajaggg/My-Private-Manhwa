@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://cdn.rawgit.com/Keyang/node-csvtojson/d41f44aa/browser/csvtojson.min.js"></script>
+        <title>Manhtia.Database</title>
+    </head>
+    <title>JSON Data Table - Multiple Sheets</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        th {
+            background-color: #f4f4f4;
+            text-align: left;
+        }
+        select {
+            margin-bottom: 10px;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Manhtia Parent Databases</h1>
+    <label for="sheet-select">Select Database:</label>
+    <select id="sheet-select"></select> <a id="link">Database</a>
+    <table id="data-table">
+        <thead>
+            <tr id="table-header"></tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+    </table>
+
+    <script>
+        // Base API URL
+        const sheetLink = "https://docs.google.com/spreadsheets/d/";
+        const apiBaseURL = "https://script.google.com/macros/s/AKfycbwPyo50dXb4y5r4H2B0fLEVqpWKhWo58g_YmKna1cnlesJ96RhixlmQiwItAuLcuF0XbQ/exec";
+
+        // Function to load the sheet list
+        async function loadSheets() {
+            try {
+                const response = await fetch(`${apiBaseURL}?q=1IYFsATfXzFdeQUUoxxw1Lq63_Mk_ENF_YByk4xcnjdA&p=Sheet1`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const sheets = await response.json();
+
+                // Debug: Log the response to check its structure
+                console.log("Sheets response:", sheets);
+
+                // Populate the dropdown with sheet options
+                const sheetSelect = document.getElementById("sheet-select");
+                sheets.forEach(sheet => {
+                    if (sheet.Tablename && sheet.api_link) { // Ensure fields exist
+                        const option = document.createElement("option");
+                        option.value = sheet.api_link;
+                        option.textContent = sheet.Tablename;
+                        sheetSelect.appendChild(option);
+                    } else {
+                        console.warn("Skipping sheet with missing Tablename or api_link:", sheet);
+                    }
+                });
+
+                // Load the first sheet by default
+                if (sheets.length > 0 && sheets[0].api_link) {
+                    try{
+                        loadData(apiBaseURL + "?q=" + sheets[0].api_link + "&p=Sheet1");
+                        //document.getElementById("link").href = sheetLink + sheets[0].api_link;
+                    }catch(error){
+                        loadData(apiBaseURL + "?q=" + sheets[0].api_link + "&p=Manhwa");
+                        //document.getElementById("link").href = sheetLink + sheets[0].api_link;
+                    }
+                }
+
+                // Add event listener to load selected sheet
+                sheetSelect.addEventListener("change", (event) => {
+                    try{
+                        loadData(apiBaseURL + "?q=" + event.target.value + "&p=Sheet1");
+                        //document.getElementById("link").href = sheetLink + sheets[0].api_link;
+                    }catch(error){
+                        loadData(apiBaseURL + "?q=" + event.target.value + "&p=Manhwa");
+                        //document.getElementById("link").href = sheetLink + sheets[0].api_link;
+                    }
+                });
+            } catch (error) {
+                console.error("Error fetching sheet list:", error);
+                document.body.innerHTML += `<p>Error loading sheet list: ${error.message}</p>`;
+            }
+        }
+
+        // Function to fetch data and populate the table
+        async function loadData(apiLink) {
+            try {
+                const response = await fetch(apiLink);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+
+                // Get table header and body elements
+                const tableHeader = document.getElementById("table-header");
+                const tableBody = document.getElementById("table-body");
+
+                // Clear existing table content
+                tableHeader.innerHTML = "";
+                tableBody.innerHTML = "";
+
+                // Ensure data is available
+                if (data.length === 0) {
+                    tableBody.innerHTML = "<tr><td colspan='100%'>No data available.</td></tr>";
+                    return;
+                }
+
+                // Extract column names from the first data entry
+                const columns = Object.keys(data[0]);
+
+                // Populate table header
+                columns.forEach(column => {
+                    const th = document.createElement("th");
+                    th.textContent = column;
+                    tableHeader.appendChild(th);
+                });
+
+                // Populate table rows
+                data.forEach(item => {
+                    const tr = document.createElement("tr");
+                    columns.forEach(column => {
+                        const td = document.createElement("td");
+                        td.textContent = item[column] || ""; // Handle missing data
+                        tr.appendChild(td);
+                    });
+                    tableBody.appendChild(tr);
+                });
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                document.getElementById("data-table").innerHTML = `<p>Error loading data: ${error.message}</p>`;
+            }
+        }
+
+        // Load sheet list on page load
+        window.onload = loadSheets;
+    </script>
+</body>
+</html>
