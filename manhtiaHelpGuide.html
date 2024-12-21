@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON to Table</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+    <h1>JSON Data as Table</h1>
+    <table id="data-table">
+        <thead>
+            <tr id="table-header"></tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+    </table>
+
+    <script>
+      // Replace with your API URL
+      const apiUrl = 'https://jsonplaceholder.typicode.com/users';
+      
+      // Fetch JSON data from the API
+      async function fetchData() {
+          try {
+              const response = await fetch(apiUrl);
+              const data = await response.json();
+              populateTable(data);
+          } catch (error) {
+              console.error('Error fetching data:', error);
+          }
+      }
+      
+      // Populate the HTML table with JSON data
+      function populateTable(data) {
+          const tableHeader = document.getElementById('table-header');
+          const tableBody = document.getElementById('table-body');
+      
+          // Clear existing content
+          tableHeader.innerHTML = '';
+          tableBody.innerHTML = '';
+      
+          if (data.length > 0) {
+              // Generate table headers
+              const headers = Object.keys(data[0]);
+              headers.forEach(header => {
+                  const th = document.createElement('th');
+                  th.textContent = header;
+                  tableHeader.appendChild(th);
+              });
+      
+              // Generate table rows
+              data.forEach(item => {
+                  const row = document.createElement('tr');
+                  headers.forEach(header => {
+                      const td = document.createElement('td');
+                      td.textContent = item[header];
+                      row.appendChild(td);
+                  });
+                  tableBody.appendChild(row);
+              });
+          }
+      }
+      
+      // Load data when the page loads
+      document.addEventListener('DOMContentLoaded', fetchData);
+
+    </script>
+</body>
+</html>
