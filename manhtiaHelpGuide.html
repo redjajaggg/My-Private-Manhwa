@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manhtia.Help</title>
+    <title>Manhtia Help</title>
     <style>
         body {
-            font-family: Tahoma;
+            font-family: Tahoma, sans-serif;
             background-color: #2A2A2A;
             color: white;
             margin: 0;
@@ -14,12 +14,12 @@
         }
         h1 {
             text-align: center;
-            padding: 20px 0;
+            margin: 20px 0;
         }
         table {
-            width: 100%;
+            width: 90%;
+            margin: 0 auto;
             border-collapse: collapse;
-            margin: 20px 0;
             background-color: #444;
             color: white;
         }
@@ -32,7 +32,7 @@
             background-color: #555;
         }
         td div {
-            margin: 5px 0;
+            margin-bottom: 5px;
         }
     </style>
 </head>
@@ -85,10 +85,14 @@
                         const td = document.createElement('td');
                         const cellValue = item[header];
 
-                        // Check if the cell value contains a dollar sign
+                        // Check if the cell value contains a dollar sign and process
                         if (typeof cellValue === 'string' && cellValue.includes('$')) {
-                            const splitValues = cellValue.split('$').map(str => str.trim());
-                            td.innerHTML = splitValues.map(value => `<div>${value}</div>`).join('$');
+                            const splitValues = cellValue.split('$').map(value => value.trim());
+                            splitValues.forEach(value => {
+                                if (value) {
+                                    td.innerHTML += `<div>${value}</div>`;
+                                }
+                            });
                         } else {
                             td.textContent = cellValue;
                         }
