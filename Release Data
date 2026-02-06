@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Release Database Search | Red Edition</title>
+    <style>
+        /* General Styling */
+        body { 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            margin: 0; 
+            padding: 20px;
+            background-color: #fff5f5; /* Light red/pink tint background */
+            color: #2d3436; 
+        }
+        .container { 
+            max-width: 1400px; 
+            margin: auto; 
+            background: white; 
+            padding: 30px; 
+            border-radius: 12px; 
+            box-shadow: 0 10px 30px rgba(214, 48, 49, 0.1); 
+        }
+        
+        h2 { 
+            margin-top: 0; 
+            color: #d63031; /* Primary Crimson Red */
+            border-bottom: 3px solid #d63031; 
+            padding-bottom: 15px; 
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 800;
+        }
+        
+        /* Search Interface */
+        .search-container { 
+            display: flex; 
+            gap: 12px; 
+            margin: 25px 0; 
+        }
+        input#assNameInput { 
+            padding: 14px 18px; 
+            flex-grow: 1; 
+            border: 2px solid #fab1a0; /* Soft peach/red border */
+            border-radius: 8px; 
+            font-size: 16px; 
+            outline: none; 
+            transition: all 0.3s ease;
+        }
+        input#assNameInput:focus { 
+            border-color: #d63031; 
+            box-shadow: 0 0 0 4px rgba(214, 48, 49, 0.1); 
+        }
+        
+        button#searchBtn { 
+            padding: 14px 30px; 
+            background-color: #d63031; 
+            color: white; 
+            border: none; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            font-size: 16px;
+            transition: background 0.2s ease; 
+        }
+        button#searchBtn:hover { 
+            background-color: #ff7675; 
+        }
+
+        /* Status Messages */
+        #status { 
+            margin-bottom: 15px; 
+            font-weight: 600; 
+            min-height: 24px; 
+            padding: 0 5px;
+        }
+        .success { color: #27ae60; } 
+        .error { color: #d63031; }
+        .loading { color: #e17055; font-style: italic; }
+
+        /* Table Design */
+        .table-wrapper { 
+            overflow-x: auto; 
+            border: 1px solid #ffeaea; 
+            border-radius: 8px; 
+            margin-top: 10px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+        }
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            min-width: 1000px; 
+        }
+        th { 
+            background-color: #fff2f2; 
+            color: #b71515; 
+            text-transform: uppercase; 
+            font-size: 12px; 
+            font-weight: 700;
+            letter-spacing: 0.5px; 
+            position: sticky; 
+            top: 0; 
+        }
+        th, td { 
+            padding: 16px; 
+            text-align: left; 
+            border-bottom: 1px solid #f9eaea; 
+            white-space: nowrap; 
+        }
+        tr:hover { 
+            background-color: #fff9f9; 
+        }
+        
+        /* Interactive Elements */
+        .url-link { 
+            color: #d63031; 
+            text-decoration: none; 
+            border: 1.5px solid #d63031; 
+            padding: 6px 14px; 
+            border-radius: 6px; 
+            font-size: 13px; 
+            font-weight: bold; 
+            transition: all 0.2s ease;
+            display: inline-block;
+        }
+        .url-link:hover { 
+            background: #d63031; 
+            color: white; 
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Release Database Search</h2>
+    
+    <div class="search-container">
+        <input type="text" id="assNameInput" placeholder="Enter AssName (e.g., 애욕)" onkeypress="if(event.key === 'Enter') fetchData()">
+        <button id="searchBtn" onclick="fetchData()">Search Database</button>
+    </div>
+
+    <div id="status"></div>
+    
+    <div class="table-wrapper">
+        <table id="resultsTable">
+            <thead><tr id="tableHeaders"></tr></thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    // Your Apps Script Deployment URL
+    const BASE_URL = 'https://script.google.com/macros/s/AKfycbyxcqna-sFJJJapA-aARhTIupAd3m9gd3eD1zLX9YF2bTXEoKwI0cyiREYF49ocj3dg/exec';
+
+    // 1. Initial Load: Check for URL Parameters
+    window.onload = () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const nameParam = urlParams.get('assname');
+
+        if (nameParam) {
+            document.getElementById('assNameInput').value = decodeURIComponent(nameParam);
+            fetchData();
+        }
+    };
+
+    // 2. Fetch Data Function
+    async function fetchData() {
+        const input = document.getElementById('assNameInput').value.trim();
+        const status = document.getElementById('status');
+        const body = document.getElementById('tableBody');
+        const headers = document.getElementById('tableHeaders');
+
+        if (!input) {
+            status.innerHTML = "⚠ Please enter a search term.";
+            status.className = "error";
+            return;
+        }
+
+        status.innerHTML = "Connecting to database...";
+        status.className = "loading";
+        
+        try {
+            const response = await fetch(`${BASE_URL}?assname=${encodeURIComponent(input)}`);
+            const json = await response.json();
+
+            if (json.data && json.data.rows.length > 0) {
+                renderTable(json.data);
+                status.innerHTML = `✔ Found ${json.data.rows.length} records for "${input}".`;
+                status.className = "success";
+            } else {
+                body.innerHTML = "";
+                headers.innerHTML = "";
+                status.innerHTML = `✖ No matches found for "${input}".`;
+                status.className = "error";
+            }
+        } catch (error) {
+            status.innerHTML = "🚨 Connection Error. Ensure the Apps Script is deployed to 'Anyone'.";
+            status.className = "error";
+        }
+    }
+
+    // 3. Render Table Function
+    function renderTable(data) {
+        const headerRow = document.getElementById('tableHeaders');
+        const body = document.getElementById('tableBody');
+        
+        headerRow.innerHTML = "";
+        body.innerHTML = "";
+
+        // Create Headers
+        data.headers.forEach(h => {
+            let th = document.createElement('th');
+            th.textContent = h;
+            headerRow.appendChild(th);
+        });
+
+        // Create Rows
+        data.rows.forEach(rowData => {
+            let tr = document.createElement('tr');
+            rowData.forEach((cell, index) => {
+                let td = document.createElement('td');
+                
+                // Handle Links (Specifically for "Translation URL" column)
+                if (data.headers[index] === "Translation URL" && cell) {
+                    td.innerHTML = `<a href="${cell}" target="_blank" class="url-link">Open Source</a>`;
+                } 
+                // Handle Dates (Formatting ISO strings)
+                else if (typeof cell === 'string' && cell.includes('T') && !isNaN(Date.parse(cell))) {
+                    td.textContent = cell.split('T')[0];
+                }
+                else {
+                    td.textContent = cell || "-";
+                }
+                tr.appendChild(td);
+            });
+            body.appendChild(tr);
+        });
+    }
+</script>
+
+</body>
+</html>
