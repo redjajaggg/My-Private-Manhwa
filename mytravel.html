@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Travel Journal</title>
+    
+    <style>
+        :root {
+            --primary-text: #2c3e50;
+            --accent-color: #e67e22;
+            --bg-color: #f4f7f6;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--primary-text);
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header & Details Styling */
+        .trip-header {
+            background: linear-gradient(rgba(30, 40, 50, 0.7), rgba(30, 40, 50, 0.8)), url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1500&q=80') center/cover;
+            color: white;
+            padding: 40px 20px 60px 20px;
+            text-align: center;
+            border-bottom: 5px solid var(--accent-color);
+            position: relative;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background 0.3s;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .back-btn:hover {
+            background: rgba(0, 0, 0, 0.8);
+            border-color: white;
+        }
+
+        .trip-header h1 {
+            font-size: 3rem;
+            margin-top: 0;
+            margin-bottom: 30px;
+            letter-spacing: 2px;
+            text-transform: capitalize;
+        }
+
+        .trip-details {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            max-width: 900px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+        }
+
+        .detail-item {
+            font-size: 1.1rem;
+        }
+        
+        .full-width {
+            width: 100%;
+        }
+
+        .map-links-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .map-links-container a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            background: var(--accent-color);
+            padding: 8px 20px;
+            border-radius: 20px;
+            transition: background 0.3s;
+        }
+
+        .map-links-container a:hover {
+            background: #d35400;
+        }
+
+        /* Gallery Styling */
+        .trip-gallery {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 0 20px;
+            text-align: center;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        /* Text-Only Card for Homepage */
+        .trip-card-text {
+            background: white;
+            padding: 30px 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: var(--primary-text);
+            display: block;
+            border-left: 5px solid var(--accent-color);
+        }
+
+        .trip-card-text:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+        }
+
+        .trip-card-text h3 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        /* Photo card effect */
+        .photo-card {
+            background: white;
+            padding: 12px 12px 20px 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            border-radius: 4px;
+            transition: transform 0.3s ease;
+            cursor: zoom-in;
+        }
+
+        .photo-card:hover {
+            transform: translateY(-5px) rotate(1deg);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+        }
+
+        .photo-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+            border-radius: 2px;
+        }
+        
+        /* Utility class to hide elements */
+        .hidden {
+            display: none !important;
+        }
+
+        .loading-text {
+            grid-column: 1 / -1;
+            font-size: 1.2rem;
+            color: #7f8c8d;
+        }
+
+        /* ========================================= */
+        /* FULL SCREEN IMAGE MODAL STYLES            */
+        /* ========================================= */
+        .modal {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: rgba(0, 0, 0, 0.5); /* เปลี่ยนความทึบแสงเป็น 50% ให้เห็นทะลุได้ */
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px; right: 25px;
+            color: white; font-size: 40px; font-weight: bold;
+            cursor: pointer; z-index: 10001;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.8);
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-body {
+            width: 100%; height: 100%;
+            display: flex; justify-content: center; align-items: center;
+            overflow: auto;
+        }
+
+        #modal-img {
+            max-width: 90vw;
+            max-height: 90vh;
+            object-fit: contain;
+            transition: transform 0.1s ease-out; 
+            transform-origin: center center;
+            cursor: pointer;
+        }
+
+        .zoom-controls {
+            position: absolute;
+            bottom: 30px; left: 50%;
+            transform: translateX(-50%);
+            display: flex; align-items: center; gap: 15px;
+            z-index: 10001;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 12px 25px;
+            border-radius: 30px;
+            transition: opacity 0.3s ease;
+        }
+
+        /* สไตล์ของ Slide Bar */
+        .zoom-controls input[type="range"] {
+            -webkit-appearance: none;
+            width: 150px;
+            background: transparent;
+        }
+        
+        .zoom-controls input[type="range"]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 6px;
+            cursor: pointer;
+            background: #ecf0f1;
+            border-radius: 5px;
+        }
+        
+        .zoom-controls input[type="range"]::-webkit-slider-thumb {
+            height: 18px;
+            width: 18px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            cursor: pointer;
+            -webkit-appearance: none;
+            margin-top: -6px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+        }
+
+        .zoom-controls button {
+            background: white; border: none; font-size: 16px;
+            width: 35px; height: 35px; border-radius: 50%;
+            cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            display: flex; justify-content: center; align-items: center;
+        }
+
+        .zoom-controls button:hover { background: #eee; }
+
+        /* คลาสสำหรับซ่อน UI เมื่อกดที่รูป */
+        .fade-ui {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Responsive สำหรับมือถือ */
+        @media (max-width: 768px) {
+            #modal-img {
+                max-width: 100vw;
+                max-height: 100vh;
+            }
+            .close-btn {
+                top: 10px; right: 20px; font-size: 35px;
+            }
+            .zoom-controls {
+                bottom: 20px; padding: 10px 20px;
+            }
+            .zoom-controls input[type="range"] {
+                width: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <!-- Top Section: Trip Details -->
+    <header class="trip-header">
+        
+        <!-- Back Button -->
+        <a href="#" id="back-btn" class="back-btn hidden" onclick="window.location.href = window.location.pathname; return false;">⬅ Back to Home</a>
+        
+        <h1 id="trip-title">Loading Database...</h1>
+        
+        <div class="trip-details">
+            <div class="detail-item trip-specific"><strong>Date:</strong> <span id="trip-date">-</span></div>
+            <div class="detail-item trip-specific"><strong>Flight:</strong> <span id="trip-flight">-</span></div>
+            <div class="detail-item trip-specific"><strong>Seat:</strong> <span id="trip-seat">-</span></div>
+            <div class="detail-item trip-specific"><strong>Spent:</strong> <span id="trip-spent">-</span></div>
+            <div class="detail-item trip-specific full-width"><strong>Description:</strong> <span id="trip-description">-</span></div>
+
+            <!-- Map links container -->
+            <div class="detail-item map-links-container" id="map-links">
+                <!-- Links injected via Javascript -->
+            </div>
+        </div>
+    </header>
+
+    <!-- Bottom Section: Pictures or Trip Selection -->
+    <section class="trip-gallery">
+        <h2 id="gallery-title">Trip Memories</h2>
+        <div class="gallery-grid" id="gallery-grid">
+            <!-- Content injected via Javascript -->
+        </div>
+    </section>
+
+    <!-- Modal สำหรับแสดงภาพเต็มจอ -->
+    <div id="image-modal" class="modal hidden">
+        <span class="close-btn" id="modal-close-btn" onclick="closeModal()">&times;</span>
+        
+        <!-- แผงปรับซูม (Slider) -->
+        <div class="zoom-controls" id="modal-ui-controls">
+            <span style="color: white; font-size: 18px;">🔍</span>
+            <input type="range" id="zoom-slider" min="0.5" max="4" step="0.1" value="1" oninput="applyZoom(this.value)">
+            <button onclick="resetZoom()" title="Reset Zoom">🔄</button>
+        </div>
+
+        <!-- ตัวบอดี้ภาพ หากกดที่พื้นที่ว่างๆ (นอกรูป) ให้ปิด Modal -->
+        <div class="modal-body" onclick="closeModal()">
+            <!-- รูปภาพ หากกดที่รูปให้เรียกใช้คำสั่ง toggleUI แทนการปิดภาพ -->
+            <img id="modal-img" src="" alt="Full Screen Image" onclick="toggleUI(event)">
+        </div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const currentTripName = urlParams.get('trip');
+
+        // Grab HTML elements
+        const titleElement = document.getElementById('trip-title');
+        const specificDetails = document.querySelectorAll('.trip-specific');
+        const mapLinksContainer = document.getElementById('map-links');
+        const galleryTitle = document.getElementById('gallery-title');
+        const galleryGrid = document.getElementById('gallery-grid');
+        const backBtn = document.getElementById('back-btn');
+
+        // Google Sheets Info API Endpoint
+        const INFO_API_URL = "https://script.google.com/macros/s/AKfycbwPyo50dXb4y5r4H2B0fLEVqpWKhWo58g_YmKna1cnlesJ96RhixlmQiwItAuLcuF0XbQ/exec?q=1d04EhM0vGbwKVcLGMQq8AhY_KvPr0sYOT2BDOLwFaGI&p=Sheet1";
+        
+        // Google Drive Images API Base URL
+        const IMAGES_API_BASE_URL = "https://script.google.com/macros/s/AKfycbwYeLViEWHKqGWzkQZJuH_l5by5--Q0a7ev814-gb-QWRFXLQXF1DXYk8haEFfR-1G8/exec?folderId=";
+
+        async function fetchTripData() {
+            try {
+                const response = await fetch(INFO_API_URL);
+                const data = await response.json();
+
+                if (!currentTripName) {
+                    // HOMEPAGE LOGIC 
+                    titleElement.textContent = "My World Tour";
+                    backBtn.classList.add('hidden');
+                    specificDetails.forEach(detail => detail.classList.add('hidden'));
+
+                    mapLinksContainer.innerHTML = `
+                        <a href="https://maps.app.goo.gl/VwfsS1pCS94zVmTB6" target="_blank">📍 To Reach Destinations</a>
+                        <a href="https://maps.app.goo.gl/4By2Dgt7cDUg63ab9" target="_blank">✅ Visited Destinations</a>
+                    `;
+
+                    galleryTitle.textContent = "Select Trips to View";
+                    galleryGrid.innerHTML = "";
+
+                    data.forEach(trip => {
+                        if (trip.Trip) {
+                            galleryGrid.innerHTML += `
+                                <a href="?trip=${encodeURIComponent(trip.Trip)}" style="text-decoration: none;">
+                                    <div class="trip-card-text">
+                                        <h3>🗺️ ${trip.Trip}</h3>
+                                    </div>
+                                </a>
+                            `;
+                        }
+                    });
+                    
+                } else {
+                    // SPECIFIC TRIP LOGIC
+                    backBtn.classList.remove('hidden');
+                    specificDetails.forEach(detail => detail.classList.remove('hidden'));
+
+                    const activeTrip = data.find(t => t.Trip.toLowerCase() === currentTripName.toLowerCase());
+
+                    if (activeTrip) {
+                        titleElement.textContent = activeTrip.Trip;
+                        document.getElementById('trip-date').textContent = activeTrip.Date || "-";
+                        document.getElementById('trip-flight').textContent = activeTrip.Flight || "-";
+                        document.getElementById('trip-seat').textContent = activeTrip.Seat || "-";
+                        document.getElementById('trip-spent').textContent = activeTrip.Spent || "-";
+                        document.getElementById('trip-description').textContent = activeTrip.Description || "-";
+
+                        mapLinksContainer.innerHTML = `
+                            <a href="${activeTrip.Map || '#'}" target="_blank" id="specific-trip-map">📍 Open Google Map</a>
+                        `;
+
+                        galleryTitle.textContent = "Trip Memories";
+                        
+                        if (activeTrip.Databaselink) {
+                            galleryGrid.innerHTML = '<div class="loading-text">Loading images from Google Drive... ⏳</div>';
+                            fetchImages(activeTrip.Databaselink);
+                        } else {
+                            galleryGrid.innerHTML = '<div class="loading-text">No photo folder linked for this trip.</div>';
+                        }
+
+                    } else {
+                        titleElement.textContent = "Trip Not Found";
+                        galleryTitle.textContent = "";
+                        galleryGrid.innerHTML = "<p>Sorry, we couldn't find data for this trip in the database.</p>";
+                    }
+                }
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                titleElement.textContent = "Error Loading Database";
+                galleryGrid.innerHTML = "<p>Please check your internet connection or the API URL.</p>";
+            }
+        }
+
+        async function fetchImages(folderId) {
+            try {
+                const imgResponse = await fetch(IMAGES_API_BASE_URL + folderId);
+                const imgData = await imgResponse.json();
+
+                if (imgData.status === "success" && imgData.data && imgData.data.length > 0) {
+                    galleryGrid.innerHTML = ""; 
+                    
+                    // จัดเรียงลำดับตามชื่อไฟล์ (name) ตัวอักษรและตัวเลข
+                    imgData.data.sort((a, b) => a.name.localeCompare(b.name, undefined, {numeric: true, sensitivity: 'base'}));
+                    
+                    imgData.data.forEach(img => {
+                        // ใช้ URL เดิมจาก API (ความละเอียด =s6000) ไม่แก้ไข เพื่อป้องกัน Error
+                        const imgUrl = img.url;
+
+                        galleryGrid.innerHTML += `
+                            <div class="photo-card" onclick="openModal('${imgUrl}')">
+                                <img src="${imgUrl}" alt="${img.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x300?text=Image+Error'">
+                            </div>
+                        `;
+                    });
+                } else {
+                    galleryGrid.innerHTML = '<div class="loading-text">No images found in this folder.</div>';
+                }
+            } catch (error) {
+                console.error("Error fetching images:", error);
+                galleryGrid.innerHTML = '<div class="loading-text">Error loading images. Please try again later.</div>';
+            }
+        }
+
+        // ==========================================
+        // SCRIPT สำหรับจัดการ Image Modal & Zoom (Slider)
+        // ==========================================
+        const modal = document.getElementById('image-modal');
+        const modalImg = document.getElementById('modal-img');
+        const zoomSlider = document.getElementById('zoom-slider');
+        const modalUiControls = document.getElementById('modal-ui-controls');
+        const modalCloseBtn = document.getElementById('modal-close-btn');
+
+        // ฟังก์ชันเปิด Modal และตั้งค่า Slider ให้กลับมาเริ่มต้น
+        function openModal(imgSrc) {
+            modalImg.src = imgSrc;
+            
+            // คืนค่าการซูมและสไลด์บาร์กลับมาที่ 1
+            zoomSlider.value = 1;
+            modalImg.style.transform = `scale(1)`;
+            
+            // ทำให้มั่นใจว่า UI แสดงผลอยู่เสมอเมื่อเปิดมาใหม่
+            modalUiControls.classList.remove('fade-ui');
+            modalCloseBtn.classList.remove('fade-ui');
+
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; 
+        }
+
+        // ฟังก์ชันปิด Modal
+        function closeModal() {
+            modal.classList.add('hidden');
+            modalImg.src = "";
+            document.body.style.overflow = 'auto'; 
+        }
+
+        // ฟังก์ชันรับค่าจากสไลด์บาร์เพื่อซูม
+        function applyZoom(value) {
+            modalImg.style.transform = `scale(${value})`;
+        }
+
+        // ฟังก์ชันเมื่อกดปุ่ม Reset 🔄
+        function resetZoom() {
+            zoomSlider.value = 1;
+            modalImg.style.transform = `scale(1)`;
+        }
+
+        // ฟังก์ชันสำหรับซ่อน/โชว์ UI เมนูปุ่มต่างๆ เมื่อคลิกที่รูป
+        function toggleUI(event) {
+            // หยุดการกระทำไม่ให้คลิกทะลุไปโดนตัว Body พื้นหลังที่ตั้งค่าไว้ให้ปิดภาพ
+            event.stopPropagation();
+            
+            // ซ่อน/โชว์ โดยการเปิดปิด Class
+            modalUiControls.classList.toggle('fade-ui');
+            modalCloseBtn.classList.toggle('fade-ui');
+        }
+
+        // เริ่มต้นการทำงานเมื่อเปิดหน้าเว็บ
+        fetchTripData();
+    </script>
+</body>
+</html>
