@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Travel Journal</title>
+    <title>My Album of Journal</title>
     
     <style>
         :root {
@@ -288,7 +288,7 @@
         <!-- Back Button -->
         <a href="#" id="back-btn" class="back-btn hidden" onclick="window.location.href = window.location.pathname; return false;">⬅ Back to Home</a>
         
-        <h1 id="trip-title">Loading Database...</h1>
+        <h1 id="trip-title">Loading...</h1>
         
         <div class="trip-details">
             <div class="detail-item trip-specific"><strong>Date:</strong> <span id="trip-date">-</span></div>
@@ -306,7 +306,7 @@
 
     <!-- Bottom Section: Pictures or Trip Selection -->
     <section class="trip-gallery">
-        <h2 id="gallery-title">Trip Memories</h2>
+        <h2 id="gallery-title">Memories</h2>
         <div class="gallery-grid" id="gallery-grid">
             <!-- Content injected via Javascript -->
         </div>
@@ -355,7 +355,7 @@
 
                 if (!currentTripName) {
                     // HOMEPAGE LOGIC 
-                    titleElement.textContent = "My World Tour";
+                    titleElement.textContent = "My Journal";
                     backBtn.classList.add('hidden');
                     specificDetails.forEach(detail => detail.classList.add('hidden'));
 
@@ -364,7 +364,7 @@
                         <a href="https://maps.app.goo.gl/4By2Dgt7cDUg63ab9" target="_blank">✅ Visited Destinations</a>
                     `;
 
-                    galleryTitle.textContent = "Select Trips to View";
+                    galleryTitle.textContent = "Select to View";
                     galleryGrid.innerHTML = "";
 
                     data.forEach(trip => {
