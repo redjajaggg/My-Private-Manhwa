@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manhtia.Viewer-Dynamics</title>
+  <link rel="icon" href="https://i.pinimg.com/564x/6f/b1/fa/6fb1fa3c16a2aa37a4ab3d7e192b7c2d.jpg">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #121212;
+      color: #ffffff;
+    }
+    .header {
+      padding: 15px;
+      text-align: center;
+      background-color: #1e1e1e;
+      border-bottom: 1px solid #333;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      transition: top 0.3s;
+    }
+    .header.hidden-ui {
+      display: none;
+    }
+    .chapter-info {
+      margin-bottom: 10px;
+      font-size: 14px;
+      color: #aaa;
+    }
+    .chapter-buttons {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding-bottom: 20px;
+      width: 100%;
+    }
+    .chapter-buttons button {
+      background-color: #2a2a2a;
+      color: white;
+      border: 1px solid #444;
+      padding: 12px; 
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background-color 0.2s;
+      width: 100%;           
+      max-width: 300px;      
+      box-sizing: border-box;
+    }
+    .chapter-buttons button:hover {
+      background-color: #444;
+    }
+    button.active {
+      background-color: #d32f2f;
+      border-color: #b71c1c;
+    }
+    
+    #action-ui {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+    #current-chapter-title {
+      font-size: 18px;
+      font-weight: bold;
+      color: #ffffff;
+    }
+    .action-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+    #back-button, #reload-button {
+      background-color: #d32f2f;
+      border: 1px solid #b71c1c;
+      font-weight: bold;
+      padding: 10px 20px;
+      border-radius: 4px;
+      color: white;
+      cursor: pointer;
+    }
+    #back-button:hover, #reload-button:hover {
+      background-color: #b71c1c;
+    }
+    #reload-button {
+      background-color: #444;
+      border-color: #222;
+    }
+    #reload-button:hover {
+      background-color: #666;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+    .viewer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+    .viewer img {
+      width: 100%;
+      max-width: 800px;
+      display: block;
+      margin: 0; 
+      padding: 0;
+      background-color: #222;
+      min-height: 500px; /* Gives placeholder space while lazy loading */
+      cursor: pointer; 
+    }
+    #loading-message {
+      text-align: center;
+      padding: 40px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="top-header" class="header">
+    <div id="action-ui" class="hidden">
+      <div id="current-chapter-title"></div>
+      <div class="action-buttons">
+        <button id="back-button" onclick="showChapterList()">← Back to Chapters</button>
+        <button id="reload-button" onclick="reloadCurrentChapter()">↻ Reload Images</button>
+      </div>
+    </div>
+    
+    <div id="chapter-selection">
+      <div id="chapter-info" class="chapter-info">Loading chapters...</div>
+      <div id="chapter-buttons" class="chapter-buttons"></div>
+    </div>
+  </div>
+  
+  <div id="viewer" class="viewer"></div>
+  <br>
+  <div id="loading-message">
+    Notice: Attention! This website(Manhtia) is a personal collection, Existing is not for commercial.<br>
+    © 2023 Manhtia All Rights are reserved. Website source reserves to Manhtia, Contents credit to owner.
+  </div>
+
+  <script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbyWtI4Eve8XM70BKwgkT1eFYyfaHJBGu_7I1pbEfDHhMTHX2mzEAetSJYleeYS8sSSUbQ/exec"; 
+    
+    const urlParams = new URLSearchParams(window.location.search);
+    const PARENT_FOLDER_ID = urlParams.get('p');
+
+    let comicData = [];
+    
+    let currentChapterIndex = null;
+    let currentActiveButton = null;
+
+    async function fetchChapters() {
+      if (!PARENT_FOLDER_ID) {
+        document.getElementById('loading-message').innerText = "No folder ID provided. Please add ?p=YOUR_FOLDER_ID to the webpage URL.";
+        return;
+      }
+
+      try {
+        const response = await fetch(`${API_URL}?q=${PARENT_FOLDER_ID}`);
+        comicData = await response.json();
+
+        if (comicData.error) {
+          document.getElementById('loading-message').innerText = "Error: " + comicData.error;
+          return;
+        }
+
+        document.getElementById('loading-message').style.display = 'none';
+        renderButtons();
+      } catch (error) {
+        document.getElementById('loading-message').innerText = "Failed to load data.";
+        console.error(error);
+      }
+    }
+
+    function renderButtons() {
+      const btnContainer = document.getElementById('chapter-buttons');
+      const infoContainer = document.getElementById('chapter-info');
+      
+      infoContainer.innerText = `Total Chapters: ${comicData.length}`;
+
+      comicData.forEach((chapter, index) => {
+        const chapterName = chapter[0]; 
+        const btn = document.createElement('button');
+        btn.innerText = chapterName;
+        btn.onclick = () => loadChapter(index, btn, true); 
+        btnContainer.appendChild(btn);
+      });
+    }
+
+    function loadChapter(chapterIndex, clickedButton, isNewChapter = false) {
+      currentChapterIndex = chapterIndex;
+      if (clickedButton) currentActiveButton = clickedButton;
+
+      const buttons = document.querySelectorAll('#chapter-buttons button');
+      buttons.forEach(b => b.classList.remove('active'));
+      if (currentActiveButton) currentActiveButton.classList.add('active');
+
+      const chapterName = comicData[chapterIndex][0];
+      document.getElementById('current-chapter-title').innerText = chapterName;
+
+      document.getElementById('chapter-selection').classList.add('hidden');
+      document.getElementById('action-ui').classList.remove('hidden');
+      document.getElementById('top-header').classList.remove('hidden-ui');
+
+      const viewer = document.getElementById('viewer');
+      viewer.innerHTML = ''; 
+
+      const chapterData = comicData[chapterIndex];
+      const fileIds = chapterData.slice(1); 
+
+      fileIds.forEach(fileId => {
+        const img = document.createElement('img');
+        
+        // LAZY LOADING is kept here to handle the massive s6000 image sizes
+        img.loading = "lazy";
+        
+        // Changed back to s6000 per request
+        img.src = `https://lh5.googleusercontent.com/d/${fileId}=s6000`;
+        
+        img.onclick = toggleUI;
+        
+        img.onerror = function() {
+          this.src = `https://lh5.googleusercontent.com/d/${fileId}=s6000`;
+        };
+        
+        viewer.appendChild(img);
+      });
+
+      if (isNewChapter) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function reloadCurrentChapter() {
+      if (currentChapterIndex !== null) {
+        loadChapter(currentChapterIndex, currentActiveButton, false);
+      }
+    }
+
+    function showChapterList() {
+      document.getElementById('chapter-selection').classList.remove('hidden');
+      document.getElementById('action-ui').classList.add('hidden');
+      document.getElementById('top-header').classList.remove('hidden-ui');
+      
+      document.getElementById('viewer').innerHTML = '';
+      
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function toggleUI() {
+      const header = document.getElementById('top-header');
+      header.classList.toggle('hidden-ui');
+    }
+
+    fetchChapters();
+  </script>
+
+</body>
+</html>
