@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Release Database Search | Red Edition</title>
+    <title>Manhtia.Release</title>
     <style>
         /* General Styling */
         body { 
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
             margin: 0; 
             padding: 20px;
-            background-color: #fff5f5; /* Light red/pink tint background */
+            background-color: #fff5f5; 
             color: #2d3436; 
         }
         .container { 
@@ -24,12 +24,22 @@
         
         h2 { 
             margin-top: 0; 
-            color: #d63031; /* Primary Crimson Red */
+            color: #d63031; 
             border-bottom: 3px solid #d63031; 
             padding-bottom: 15px; 
             text-transform: uppercase;
             letter-spacing: 1.5px;
             font-weight: 800;
+        }
+
+        h3 {
+            margin-top: 35px;
+            margin-bottom: 10px;
+            color: #d63031;
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
         }
         
         /* Search Interface */
@@ -41,7 +51,7 @@
         input#assNameInput { 
             padding: 14px 18px; 
             flex-grow: 1; 
-            border: 2px solid #fab1a0; /* Soft peach/red border */
+            border: 2px solid #fab1a0; 
             border-radius: 8px; 
             font-size: 16px; 
             outline: none; 
@@ -83,8 +93,9 @@
             overflow-x: auto; 
             border: 1px solid #ffeaea; 
             border-radius: 8px; 
-            margin-top: 10px; 
+            margin-bottom: 20px; 
             box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+            background: white;
         }
         table { 
             width: 100%; 
@@ -128,12 +139,17 @@
             color: white; 
             transform: translateY(-1px);
         }
+        .fetching-text {
+            color: #b2bec3;
+            font-style: italic;
+            font-size: 13px;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>Release Database Search</h2>
+    <h2>Release Information</h2>
     
     <div class="search-container">
         <input type="text" id="assNameInput" placeholder="Enter AssName (e.g., 애욕)" onkeypress="if(event.key === 'Enter') fetchData()">
@@ -142,10 +158,27 @@
 
     <div id="status"></div>
     
+    <!-- Table 1: Main Google Sheets Data -->
+    <h3>Results</h3>
     <div class="table-wrapper">
         <table id="resultsTable">
             <thead><tr id="tableHeaders"></tr></thead>
             <tbody id="tableBody"></tbody>
+        </table>
+    </div>
+
+    <!-- Table 2: Separate Creator/Artist Data -->
+    <h3>Creator/Artist (AniList)</h3>
+    <div class="table-wrapper" style="min-width: 600px;">
+        <table id="creatorTable">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Story</th>
+                    <th>Artist</th>
+                </tr>
+            </thead>
+            <tbody id="creatorTableBody"></tbody>
         </table>
     </div>
 </div>
@@ -154,7 +187,6 @@
     // Your Apps Script Deployment URL
     const BASE_URL = 'https://script.google.com/macros/s/AKfycbyxcqna-sFJJJapA-aARhTIupAd3m9gd3eD1zLX9YF2bTXEoKwI0cyiREYF49ocj3dg/exec';
 
-    // 1. Initial Load: Check for URL Parameters
     window.onload = () => {
         const urlParams = new URLSearchParams(window.location.search);
         const nameParam = urlParams.get('assname');
@@ -165,7 +197,6 @@
         }
     };
 
-    // 2. Fetch Data Function
     async function fetchData() {
         const input = document.getElementById('assNameInput').value.trim();
         const status = document.getElementById('status');
@@ -185,48 +216,61 @@
             const response = await fetch(`${BASE_URL}?assname=${encodeURIComponent(input)}`);
             const json = await response.json();
 
+            let titlesToSearchAnilist = [];
+
             if (json.data && json.data.rows.length > 0) {
-                renderTable(json.data);
-                status.innerHTML = `✔ Found ${json.data.rows.length} records for "${input}".`;
+                // Render Table 1 (Database Match Found)
+                renderMainTable(json.data);
+                status.innerHTML = `Found ${json.data.rows.length} records.`;
                 status.className = "success";
+
+                // Get unique titles from the search results to ping AniList
+                let assNameIndex = json.data.headers.findIndex(h => h.toLowerCase() === 'assname');
+                if (assNameIndex === -1) assNameIndex = 0;
+                titlesToSearchAnilist = [...new Set(json.data.rows.map(row => String(row[assNameIndex]).trim()).filter(title => title !== ""))];
+
             } else {
+                // Clear Table 1 (No Database Match)
                 body.innerHTML = "";
                 headers.innerHTML = "";
-                status.innerHTML = `✖ No matches found for "${input}".`;
+                status.innerHTML = `No matches found.`;
                 status.className = "error";
+
+                // Fallback: Use the exact search term to ping AniList directly anyway
+                titlesToSearchAnilist = [input];
             }
+
+            // Render Table 2 regardless of whether the database had a match
+            renderCreatorTable(titlesToSearchAnilist);
+
         } catch (error) {
             status.innerHTML = "🚨 Connection Error. Ensure the Apps Script is deployed to 'Anyone'.";
             status.className = "error";
         }
     }
 
-    // 3. Render Table Function
-    function renderTable(data) {
+    // Render Table 1: Pure Google Sheets Data
+    function renderMainTable(data) {
         const headerRow = document.getElementById('tableHeaders');
         const body = document.getElementById('tableBody');
         
         headerRow.innerHTML = "";
         body.innerHTML = "";
 
-        // Create Headers
         data.headers.forEach(h => {
             let th = document.createElement('th');
             th.textContent = h;
             headerRow.appendChild(th);
         });
 
-        // Create Rows
         data.rows.forEach(rowData => {
             let tr = document.createElement('tr');
             rowData.forEach((cell, index) => {
                 let td = document.createElement('td');
                 
-                // Handle Links (Specifically for "Translation URL" column)
                 if (data.headers[index] === "Translation URL" && cell) {
                     td.innerHTML = `<a href="${cell}" target="_blank" class="url-link">Open Source</a>`;
                 } 
-                // Handle Dates (Formatting ISO strings)
                 else if (typeof cell === 'string' && cell.includes('T') && !isNaN(Date.parse(cell))) {
                     td.textContent = cell.split('T')[0];
                 }
@@ -237,6 +281,107 @@
             });
             body.appendChild(tr);
         });
+    }
+
+    // Render Table 2: Live AniList Data
+    function renderCreatorTable(titles) {
+        const creatorBody = document.getElementById('creatorTableBody');
+        creatorBody.innerHTML = "";
+
+        if (titles.length === 0) {
+            creatorBody.innerHTML = '<tr><td colspan="3" style="text-align:center;">No valid titles found.</td></tr>';
+            return;
+        }
+
+        titles.forEach(title => {
+            let tr = document.createElement('tr');
+            
+            let tdTitle = document.createElement('td');
+            tdTitle.textContent = title;
+            tdTitle.style.fontWeight = 'bold';
+            tr.appendChild(tdTitle);
+
+            let tdCreator = document.createElement('td');
+            tdCreator.innerHTML = '<span class="fetching-text">Fetching...</span>';
+            tr.appendChild(tdCreator);
+
+            let tdArtist = document.createElement('td');
+            tdArtist.innerHTML = '<span class="fetching-text">Fetching...</span>';
+            tr.appendChild(tdArtist);
+
+            creatorBody.appendChild(tr);
+
+            // Fetch live data from AniList asynchronously for each title
+            fetchAniListData(title).then(result => {
+                tdCreator.textContent = result.creator;
+                tdArtist.textContent = result.artist;
+            });
+        });
+    }
+
+    // AniList GraphQL Fetcher Function
+    async function fetchAniListData(title) {
+        const query = `query ($search: String) {
+          Media(search: $search, type: MANGA) {
+            staff {
+              edges {
+                role
+                node { 
+                  name { full native } 
+                }
+              }
+            }
+          }
+        }`;
+
+        const url = 'https://graphql.anilist.co';
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({ query: query, variables: { search: title } })
+        };
+
+        try {
+            const response = await fetch(url, options);
+            const json = await response.json();
+            
+            let creatorName = 'n';
+            let artistName = 'n';
+
+            if (json.data && json.data.Media && json.data.Media.staff) {
+                const staff = json.data.Media.staff.edges;
+                
+                const creators = staff.filter(edge => {
+                    const role = (edge.role || "").toLowerCase();
+                    return role.includes('story') || role.includes('original creator');
+                }).map(edge => formatName(edge.node.name));
+                
+                const artists = staff.filter(edge => {
+                    const role = (edge.role || "").toLowerCase();
+                    return role.includes('art') || role.includes('illustrat');
+                }).map(edge => formatName(edge.node.name));
+
+                if (creators.length > 0) creatorName = creators.join(', ');
+                if (artists.length > 0) artistName = artists.join(', ');
+            }
+            
+            return { creator: creatorName, artist: artistName };
+
+        } catch (error) {
+            console.error(`AniList API Error for "${title}":`, error);
+            return { creator: 'n', artist: 'n' };
+        }
+    }
+
+    // Helper function to format English (Korean)
+    function formatName(nameObj) {
+        const engName = nameObj.full || '';
+        const natName = nameObj.native || '';
+        if (engName && natName && engName !== natName) return `${engName} (${natName})`;
+        return engName || natName || '';
     }
 </script>
 
