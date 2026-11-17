@@ -260,6 +260,21 @@
     }
 
     fetchChapters();
+    document.addEventListener('contextmenu', function(event) {
+        event.preventDefault();
+    });
+    document.addEventListener('dragstart', function (e) {
+    e.preventDefault();
+    });
+
+    // Prevent dropping files or items onto the page
+    document.addEventListener('dragover', function (e) {
+      e.preventDefault();
+    });
+    
+    document.addEventListener('drop', function (e) {
+      e.preventDefault();
+    });
   </script>
 
 </body>
